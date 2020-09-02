@@ -1,0 +1,18 @@
+
+.img-log{
+    background-image: url("/frontend/image/logo.png");
+
+}
+#main{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.card{
+    height: 520px;
+}
+.card img{
+  width: 285px;
+  height: 200px;
+}
