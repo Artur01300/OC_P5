@@ -16,15 +16,14 @@ const main = document.getElementById('main');
 function render(boucle){
   let price = boucle.price/100;
   price = price.toFixed(2);
- 
   return`
-  <div class="card" style="width: 18rem; margin: auto;">
+  <div class="card" style="width: 18rem">
     <img src="${boucle.imageUrl}" class="card-img-top" alt="${boucle.name}">
       <div class="card-body">
         <h2 class="card-title">${boucle.name}</h2>
         <p class="card-text">${boucle.description}.</p>
         <p class="card-text">${price} €</p>
-        <a href="#" class="btn btn-primary">Voir l'article</a>
+        <a href="#" class="btn btn-primary">Voir le produit</a>
       </div>
   </div>
   `

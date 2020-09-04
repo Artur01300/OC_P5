@@ -1,18 +1,24 @@
 
-.img-log{
-    background-image: url("/frontend/image/logo.png");
-
+.img_logo{
+    min-width : 100%;
+    margin: auto;
+    padding-bottom: 20px;
 }
+
+
 #main{
     display: flex;
+    justify-content: space-between;
     flex-wrap: wrap;
     flex-direction: row;
 }
 
 .card{
     height: 520px;
+    margin-bottom: 20px; 
+    
 }
 .card img{
-  width: 285px;
+  width: 286px;
   height: 200px;
 }
