@@ -1,30 +1,14 @@
 
-var request = new XMLHttpRequest();
-request.onreadystatechange = function() {
-    if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-        var response = JSON.parse(this.responseText);
-        for(const boucle of response){
-          main.innerHTML += render(boucle);
-        }
-    }
-};
-request.open("GET", "http://localhost:3000/api/furniture");
-request.send();
+let url = "http://localhost:3000/api/furniture";
 
-const main = document.getElementById('main');
+ajax(url)
+.then((products) => {
+  diplayProducts(products); 
+});
 
-function render(boucle){
-  let price = boucle.price/100;
-  price = price.toFixed(2);
-  return`
-    <div class="card" style="width: 18rem">
-      <img src="${boucle.imageUrl}" class="card-img-top" alt="${boucle.name}">
-      <div class="card-body">
-        <h2 class="card-title">${boucle.name}</h2>
-        <p class="card-text">${boucle.description}.</p>
-        <p class="card-text">${price} €</p>
-        <a href="product.html?id=${boucle._id}" class="btn btn-primary">Voir le produit</a>
-      </div>
-    </div>
-  `
+function diplayProducts(products){
+  const main = document.getElementById('main');
+  for(const product of products){
+    main.innerHTML += renderProduct(product,'card');
+  }
 }
