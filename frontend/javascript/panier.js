@@ -1,6 +1,17 @@
-const myForm = document.getElementById('myForm');
-let scdname = document.getElementById('scdname');
 let email = document.getElementById('email');
-let adress = document.getElementById('adress');
 let city = document.getElementById('city');
-let zipcode = document.getElementById('zipcode');
+
+function check_Zip(){
+    let zipCode = document.getElementById('zipcod');
+    let regex = /^[0-9]/;
+   
+    if(regex.test(zipCode) == false){
+    alert("test1");
+    return false;
+    }
+    if(zipCode == " "){
+    alert("test 2");
+    return false;
+    }
+    return true;
+}
