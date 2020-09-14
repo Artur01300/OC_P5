@@ -10,12 +10,16 @@
 }
 .card{
     height: 520px;
-    margin: 20px;    
+    margin: 20px;  
 }
-.card img{
+/* .card img{
   width: 286px;
   height: 200px;
-}
+} */
 .btn{
     margin-bottom: 20px;
+}
+
+footer{
+    padding-top: 140px;
 }
