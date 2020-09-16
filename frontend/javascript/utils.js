@@ -7,7 +7,6 @@ function ajax(url){
       resolve(response);
     }
   };
-
   request.open("GET", url);
   request.send();
   });
@@ -18,7 +17,7 @@ function displayPrice(price){
    return price.toFixed(2);
 }
 
-function renderProduct(product, type){
+function renderProduct(product, type){ 
   if (type === 'card'){
     return`
     <div class="card" style="width: 18rem">
@@ -32,7 +31,7 @@ function renderProduct(product, type){
     </div>`
   }
   if(type === 'single'){
-    let options;
+    let options = document.getElementById('options');
       for(let varnishe of product.varnish){
         options += `<option>${varnishe}</option>`;
       }
@@ -46,7 +45,7 @@ function renderProduct(product, type){
               <div class="card-body">
                 <h5 class="card-title">${product.description}</h5>
                 <p class="card-text">${displayPrice(product.price)} €</p>
-                <select>${options}</select>
+                <select id="options">${options}</select>
                 <p class="card-text"><small class="text-muted">Référance de produit : ${product._id}</small></p>
                 <span class="btn btn-primary" id="addToCart">Ajoutez dans le panier</span>
               </div>
@@ -55,11 +54,17 @@ function renderProduct(product, type){
         </div>`;
   }
 }
-
 function store(key, value){
   return localStorage.setItem(key, JSON.stringify(value)); 
 }
 
 function get(key){
  return JSON.parse(localStorage.getItem(key));
+}
+
+function diplayProducts(products){
+  const main = document.getElementById('main');
+  for(const product of products){
+    main.innerHTML += renderProduct(product,'card');
+  }
 }
