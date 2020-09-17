@@ -10,17 +10,28 @@ ajax(url).then((product) => {
   }
 
   function listenForCartAddition(product){
-    document.getElementById('addToCart').addEventListener('click', function(){
+    let addToCart = document.getElementById('addToCart');
+    addToCart.addEventListener('click', function(){
       let products = [];
       if(get('products')){
         products = get('products');
       }
-  
       products.push( {id: product._id, name: product.name, image: product.imageUrl, price: product.price, quantity: 1, varnish: options.value } );
       store('products', products);
+      if(products = get('products')){
+        // addToCart.style.backgroundColor = 'grey';
+        // addToCart.innerHTML.disabled = true; // ne marche pas
+        // addToCart.innerHTML = `<a href="panier.html"></a>`; // ne marche pas
+        addToCart.innerHTML = alert('Pruduit ajouté dans le panier');
+        addToCart.style.display = "none";
+      }
+      // if(product._id){
+      //   console.log(product._id,)
+      // }
     });
   }
 })
+
 
   function getIdUrl(){
     const urlProd = new URLSearchParams(window.location.search);

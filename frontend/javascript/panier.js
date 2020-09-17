@@ -20,20 +20,60 @@ if (porductIds){
   }
 )}
 
-additionPrice();
+additionPrice()
 function additionPrice(){
   let showPriceParagraph = document.getElementById('show-totalprices');
   let priceTotals = 0;
   for(const priceTotal of porductIds){
-    
+
   let price = priceTotal.price / 100;
   let priceArticle = price * priceTotal.quantity;
-  priceTotals += priceArticle; 
-    console.log(priceTotals)
+  priceTotals += priceArticle;
     showPriceParagraph.innerHTML = `<strong>Prix total : </strong>${priceTotals} <strong>€</strong>`;  
+    formShop(priceTotal);
+  }
+
+  function formShop(priceTotal) {
+    console.log(priceTotal);
+    if(priceTotal = true){
+      document.getElementById('form').innerHTML = ` <section>
+          <div class="container">
+            <form id="myForm">
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <input type="text" name="nom" class="form-control" placeholder="Votre nom" id="frsname" required>
+                </div>
+                <div class="form-group col-md-6">
+                  <input type="text"  name="prenom" class="form-control" placeholder="Votre prénom" id="scdname" required>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="email"></label>
+                  <input type="email" name="email" class="form-control" placeholder="Email" id="email" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="adress">Addresse</label>
+                <input type="text" name="adresse" class="form-control" id="adress" required>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="city">Ville</label>
+                  <input type="text" name="ville" class="form-control" id="city" required>
+                </div>
+                <div class="form-group col-md-2">
+                  <label for="zipcode">Code postale</label>
+                  <input type="text" name="codpostal" class="form-control" id="zipcode" required>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary">Envoyez</button>
+            </form>  
+            <p style="color: red;" id="erreur"></p>
+          </div>
+        </section>
+        `;
+    }
   }
 }
-
 
 
 
