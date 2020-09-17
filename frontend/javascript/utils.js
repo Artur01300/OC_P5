@@ -46,7 +46,7 @@ function renderProduct(product, type){
                 <h5 class="card-title">${product.description}</h5>
                 <p class="card-text">${displayPrice(product.price)} €</p>
                 <select id="options">${options}</select>
-                <p class="card-text"><small class="text-muted">Référance de produit : ${product._id}</small></p>
+                <p class="card-text"><small class="text-muted"><strong>Référance de produit :</strong> ${product._id}</small></p>
                 <span class="btn btn-primary" id="addToCart">Ajoutez dans le panier</span>
               </div>
             </div>

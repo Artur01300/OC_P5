@@ -4,7 +4,6 @@ if (porductIds){
   ajax("http://localhost:3000/api/furniture")
   .then((products) => {
     for(const panier of porductIds){
-    
       let store =  `
         <div class="card" style="width: 16rem">
         <img src="${panier.image}" class="card-img-top" alt="${panier.name}">
@@ -21,29 +20,20 @@ if (porductIds){
   }
 )}
 
-
+additionPrice();
 function additionPrice(){
+  let showPriceParagraph = document.getElementById('show-totalprices');
   let priceTotals = 0;
   for(const priceTotal of porductIds){
     
-  let showPriceParagraph = document.getElementById('show-totalprices');
-  
-    console.log(priceTotal)
-    let priceAritmaitique =  priceTotals + (priceTotal.price * priceTotal.quantity);
-    console.log(priceAritmaitique);
-    
-    // console.log(priceTotal.price);
-    // console.log(priceTotal.quantity)
-
-    // let a = priceTotal.price;
-   
-    // a += priceTotal.price;
-    
-    // console.log(a)
-    }
+  let price = priceTotal.price / 100;
+  let priceArticle = price * priceTotal.quantity;
+  priceTotals += priceArticle; 
+    console.log(priceTotals)
+    showPriceParagraph.innerHTML = `<strong>Prix total : </strong>${priceTotals} <strong>€</strong>`;  
   }
+}
 
-additionPrice();
 
 
 
