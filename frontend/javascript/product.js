@@ -31,8 +31,6 @@ ajax(url).then((product) => {
       });
   }
 })
-
-
   function getIdUrl(){
     const urlProd = new URLSearchParams(window.location.search);
     return urlProd.get("id");

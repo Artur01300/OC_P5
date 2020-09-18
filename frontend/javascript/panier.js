@@ -28,11 +28,10 @@ if (porductIds){
         mainId.innerHTML += store;
         ifBasketEmpty.style.display = "none";
     }
-    additionPrice();
   }
 )}
 
-
+additionPrice()
 function additionPrice(){
   let showPriceParagraph = document.getElementById('show-totalprices');
   let priceTotals = 0;
@@ -43,70 +42,105 @@ function additionPrice(){
   priceTotals += priceArticle;
   showPriceParagraph.innerHTML = `<strong>Prix total : </strong>${priceTotals} <strong>€</strong>`;  
   formShop(priceTotal);
-  }
- 
-  function formShop(priceTotal) {
+
+} function formShop(priceTotal) {
     if(priceTotal = true){
       document.getElementById('form').innerHTML =  `
-        <section>
-          <div class="container">
-            <form id="myForm">
-              <div class="form-row">
-                <div class="form-group col-md-6">
-                  <input type="text" name="nom" class="form-control" placeholder="Votre nom" id="frsname" required>
-                </div>
-                <div class="form-group col-md-6">
-                  <input type="text"  name="prenom" class="form-control" placeholder="Votre prénom" id="scdname" required>
-                </div>
-                <div class="form-group col-md-6">
-                  <label for="email"></label>
-                  <input type="email" name="email" class="form-control" placeholder="Email" id="email" required>
-                </div>
+      <section>
+        <div class="container">
+          <form id="myForm" method="POST">
+            <div class="form-row">
+            <div class="form-group col-md-6">
+              <input type="text" name="nom" class="form-control" placeholder="Votre nom" id="frsname" required>
+            </div>
+            <div class="form-group col-md-6">
+              <input type="text"  name="prenom" class="form-control" placeholder="Votre prénom" id="scdname" required>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="email"></label>
+              <input type="email" name="email" class="form-control" placeholder="Email" id="email" required>
+            </div>
+            </div>
+            <div class="form-group">
+              <label for="adress">Addresse</label>
+              <input type="text" name="adresse" class="form-control" id="adress" required>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="city">Ville</label>
+                <input type="text" name="ville" class="form-control" id="city" required>
               </div>
-              <div class="form-group">
-                <label for="adress">Addresse</label>
-                <input type="text" name="adresse" class="form-control" id="adress" required>
+              <div class="form-group col-md-2">
+                <label for="zipcode">Code postale</label>
+                <input type="text" name="zipcode" class="form-control" id="zip-code" required>
               </div>
-              <div class="form-row">
-                <div class="form-group col-md-6">
-                  <label for="city">Ville</label>
-                  <input type="text" name="ville" class="form-control" id="city" required>
-                </div>
-                <div class="form-group col-md-2">
-                  <label for="zipcode">Code postale</label>
-                  <input type="text" name="codpostal" class="form-control" id="zipcode" required>
-                </div>
-              </div>
-              <button type="submit" class="btn btn-primary">Envoyez</button>
-            </form>  
-            <p style="color: red;" id="erreur"></p>
-          </div>
-        </section>
-        `
+            </div>
+            <button type="submit" class="btn btn-primary">Envoyez</button>
+          </form>  
+          <p style="color: red;" id="erreur"></p>
+        </div>
+      </section>
+      `
     }
-    
-    // if(priceTotal == false){
-    //   console.log('test2');
-    // }
   }
+  // FormChexBox()
+  // NewFuncEmail() 
 }
-//créer une fonction pour afficher consolelog si le panier est vide
+
+let form = document.querySelector('#myForm');
+console.log(form.email);
+
+form.email.addEventListener('change', function(){
+  additionPrice(this);
+
+  console.log('test 2');
+});
+
+additionPrice = function(inputEmail){
+  let emailRegExp = new RegExp(
+    '^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$', 'g'
+    );
+    let testEmail = emailRegExp.test(inputEmail.value);
+    console.log(testEmail);
+    console.log('test 3');
+};
+  
 
 
-// let email = document.getElementById('email');
-// let city = document.getElementById('city');
+// inputEmail()
+// function inputEmail(){
+//   form.addEventListener('change', function(){
+//     let form = document.querySelector('#myForm');
+//     console.log('test1');
+//     additionPrice(this);
+//     // validEmail(this);
+//     let emailRegExp = new RegExp(
+//       '^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$', 'g'
+//       );
+//     console.log(emailRegExp);
+//     let testEmail = emailRegExp.test(inputEmail.value);
+//     console.log('test 3');
+//     console.log(estEmail);
+//   });
 
-// function check_Zip(){
-//     let zipCode = document.getElementById('zipcod');
-//     let regex = /^[0-9]/;
-   
-//     if(regex.test(zipCode) == false){
-//     alert("test1");
+// };
+
+// function FormChexBox(){
+//   let zipCode = document.getElementById('zip-code');
+//   console.log(zipCode);
+//   let regex = /[0-9]/;
+//   console.log(regex.test(zipCode));
+//   if(regex.test(zipCode) == false){
 //     return false;
-//     }
-//     if(zipCode == " "){
-//     alert("test 2");
+//   }
+//   if(zipCode == ""){
 //     return false;
-//     }
-//     return true;
+//   }
+//   return true;
+// }
+
+// function NewFuncEmail() {
+//   let email = document.getElementById('email');
+//   let city = document.getElementById('city');
+//   console.log(email);
 // }
