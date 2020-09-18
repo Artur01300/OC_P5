@@ -1,5 +1,15 @@
 let porductIds = get('products');
 
+infoPagePanierEmpety();
+function infoPagePanierEmpety(){
+  let ifBasketEmpty = document.getElementById('ifBasketEmpty');
+  ifBasketEmpty.innerHTML = 'Le panier est vide, Veuillez ajoutez un produit s\'il vous plaît';
+  ifBasketEmpty.style.color = '#2F4F4F';
+  ifBasketEmpty.style.fontWeight = 'bolder';
+  ifBasketEmpty.style.fontSize = '2em';
+  ifBasketEmpty.style.textAlign = 'center'
+}
+
 if (porductIds){
   ajax("http://localhost:3000/api/furniture")
   .then((products) => {
@@ -16,11 +26,13 @@ if (porductIds){
         </div>`
         let mainId = document.getElementById('main');
         mainId.innerHTML += store;
+        ifBasketEmpty.style.display = "none";
     }
+    additionPrice();
   }
 )}
 
-additionPrice()
+
 function additionPrice(){
   let showPriceParagraph = document.getElementById('show-totalprices');
   let priceTotals = 0;
@@ -29,14 +41,14 @@ function additionPrice(){
   let price = priceTotal.price / 100;
   let priceArticle = price * priceTotal.quantity;
   priceTotals += priceArticle;
-    showPriceParagraph.innerHTML = `<strong>Prix total : </strong>${priceTotals} <strong>€</strong>`;  
-    formShop(priceTotal);
+  showPriceParagraph.innerHTML = `<strong>Prix total : </strong>${priceTotals} <strong>€</strong>`;  
+  formShop(priceTotal);
   }
-
+ 
   function formShop(priceTotal) {
-    console.log(priceTotal);
     if(priceTotal = true){
-      document.getElementById('form').innerHTML = ` <section>
+      document.getElementById('form').innerHTML =  `
+        <section>
           <div class="container">
             <form id="myForm">
               <div class="form-row">
@@ -70,11 +82,15 @@ function additionPrice(){
             <p style="color: red;" id="erreur"></p>
           </div>
         </section>
-        `;
+        `
     }
+    
+    // if(priceTotal == false){
+    //   console.log('test2');
+    // }
   }
 }
-
+//créer une fonction pour afficher consolelog si le panier est vide
 
 
 // let email = document.getElementById('email');
