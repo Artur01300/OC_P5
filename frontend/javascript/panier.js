@@ -59,6 +59,7 @@ function additionPrice(){
             <div class="form-group col-md-6">
               <label for="email"></label>
               <input type="email" name="email" class="form-control" placeholder="Email" id="email" required>
+              <p style="color: red;" id="erreur"></p>
             </div>
             </div>
             <div class="form-group">
@@ -68,79 +69,85 @@ function additionPrice(){
             <div class="form-row">
               <div class="form-group col-md-6">
                 <label for="city">Ville</label>
-                <input type="text" name="ville" class="form-control" id="city" required>
+                <input type="text" name="city" class="form-control" id="city" required>
               </div>
               <div class="form-group col-md-2">
                 <label for="zipcode">Code postale</label>
                 <input type="text" name="zipcode" class="form-control" id="zip-code" required>
+                <span style="color: red;" id="erreur-zipcde"></span>
               </div>
             </div>
             <button type="submit" class="btn btn-primary">Envoyez</button>
           </form>  
-          <p style="color: red;" id="erreur"></p>
         </div>
       </section>
       `
     }
   }
-  // FormChexBox()
-  // NewFuncEmail() 
 }
 
-let form = document.querySelector('#myForm');
-console.log(form.email);
-
-form.email.addEventListener('change', function(){
-  additionPrice(this);
-
-  console.log('test 2');
-});
+formListenVars()
+function formListenVars(){
+  let form = document.querySelector('#myForm');
+  let erreur = document.getElementById('erreur');
+  form.email.addEventListener('change', function(){
+    additionPrice(this);
+  });
+}
 
 additionPrice = function(inputEmail){
-  let emailRegExp = new RegExp(
-    '^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$', 'g'
-    );
-    let testEmail = emailRegExp.test(inputEmail.value);
-    console.log(testEmail);
-    console.log('test 3');
+  let emailRegExp = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$', 'g');
+  let testEmail = emailRegExp.test(inputEmail.value);
+  if(testEmail){
+    erreur.innerHTML = '';
+  }else{
+    erreur.innerHTML = 'Adresse e-mail non valide. Veuillez ajoutez un adresse e-mail valide.';
+    erreur.style.fontWeight = 'bolder';
+    erreur.style.fontSize = '1em';
+    // ereurZCode.remove();
+  } 
 };
-  
 
-
-// inputEmail()
-// function inputEmail(){
-//   form.addEventListener('change', function(){
-//     let form = document.querySelector('#myForm');
-//     console.log('test1');
-//     additionPrice(this);
-//     // validEmail(this);
-//     let emailRegExp = new RegExp(
-//       '^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$', 'g'
-//       );
-//     console.log(emailRegExp);
-//     let testEmail = emailRegExp.test(inputEmail.value);
-//     console.log('test 3');
-//     console.log(estEmail);
-//   });
-
-// };
-
-// function FormChexBox(){
-//   let zipCode = document.getElementById('zip-code');
-//   console.log(zipCode);
-//   let regex = /[0-9]/;
-//   console.log(regex.test(zipCode));
-//   if(regex.test(zipCode) == false){
-//     return false;
-//   }
-//   if(zipCode == ""){
-//     return false;
-//   }
-//   return true;
+// ZipCodListenVars()
+// function ZipCodListenVars(){
+  let formZCode = document.querySelector('#myForm');
+  let ereurZCode = document.getElementById('erreur-zipcde');
+  formZCode.zipcode.addEventListener('change', function(){
+    additionPrice(this);
+  })
 // }
 
-// function NewFuncEmail() {
-//   let email = document.getElementById('email');
-//   let city = document.getElementById('city');
-//   console.log(email);
-// }
+additionPrice = function (inputZipCode){
+  let regExpZipCode = /^[0-9]{5}$/;
+  let testZipCode = regExpZipCode.test(inputZipCode.value);
+
+  if(testZipCode){
+    ereurZCode.innerHTML = '';
+  }else{
+    ereurZCode.innerHTML = 'Code postale non valide. Veuillez ajoutez un code postale valide.';
+    ereurZCode.style.fontWeight = 'bolder';
+    ereurZCode.style.fontSize = '1em';
+  }
+}
+
+//****************** erreur  ******************
+
+// let formZCode = document.querySelector('#myForm');
+// let ereurZCode = document.getElementById('erreur-zipcde');
+
+// formZCode.zipcode.addEventListener('change', function(){
+//   let regExpZipCode = /^[0-9]{5}$/;
+//   let testZipCode = regExpZipCode.test(ereurZCode.value);
+ 
+//   console.log(testZipCode)
+//   if(testZipCode){
+//     ereurZCode.innerHTML = 'bien';
+//     console.log(testZipCode)
+//     console.log('terst')
+//   }else{
+//     console.log(testZipCode)
+//     ereurZCode.innerHTML = 'Code postale non valide. Veuillez ajoutez un code postale valide.';
+//     ereurZCode.style.fontWeight = 'bolder';
+//     ereurZCode.style.fontSize = '1em';
+//   }
+// })
