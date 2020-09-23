@@ -1,4 +1,4 @@
-let porductIds = get('products');
+let productIds = get('products');
 
 infoPagePanierEmpety();
 function infoPagePanierEmpety(){
@@ -10,10 +10,10 @@ function infoPagePanierEmpety(){
   ifBasketEmpty.style.textAlign = 'center'
 }
 
-if (porductIds){
+if (productIds){
   ajax("http://localhost:3000/api/furniture")
   .then((products) => {
-    for(const panier of porductIds){
+    for(const panier of productIds){
       let store =  `
         <div class="card" style="width: 16rem">
         <img src="${panier.image}" class="card-img-top" alt="${panier.name}">
@@ -23,7 +23,8 @@ if (porductIds){
             <p class="card-text"><strong>Vernie :</strong> ${panier.varnish}</p>
             <p class="card-text"><strong>Quantité :</strong> ${panier.quantity}</p>
           </div>
-        </div>`
+        </div>
+        `
         let mainId = document.getElementById('main');
         mainId.innerHTML += store;
         ifBasketEmpty.style.display = "none";
@@ -35,32 +36,34 @@ additionPrice()
 function additionPrice(){
   let showPriceParagraph = document.getElementById('show-totalprices');
   let priceTotals = 0;
-  for(const priceTotal of porductIds){
+  for(const priceTotal of productIds){
 
   let price = priceTotal.price / 100;
   let priceArticle = price * priceTotal.quantity;
   priceTotals += priceArticle;
   showPriceParagraph.innerHTML = `<strong>Prix total : </strong>${priceTotals} <strong>€</strong>`;  
   formShop(priceTotal);
+}
 
-} function formShop(priceTotal) {
-    if(priceTotal = true){
-      document.getElementById('form').innerHTML =  `
-      <section>
+function formShop(priceTotal) {
+  if(priceTotal = true){
+    document.getElementById('form').innerHTML =  
+    `
+    <section id="form-section">
         <div class="container">
           <form id="myForm" method="POST">
             <div class="form-row">
-            <div class="form-group col-md-6">
-              <input type="text" name="nom" class="form-control" placeholder="Votre nom" id="frsname" required>
-            </div>
-            <div class="form-group col-md-6">
-              <input type="text"  name="prenom" class="form-control" placeholder="Votre prénom" id="scdname" required>
-            </div>
-            <div class="form-group col-md-6">
-              <label for="email"></label>
-              <input type="email" name="email" class="form-control" placeholder="Email" id="email" required>
-              <p style="color: red;" id="erreur"></p>
-            </div>
+                <div class="form-group col-md-6">
+                    <input type="text" name="nom" class="form-control" placeholder="Votre nom" id="frsname" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <input type="text"  name="prenom" class="form-control" placeholder="Votre prénom" id="scdname" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="email"></label>
+                    <input type="email" name="email" class="form-control" placeholder="Email" id="email" required>
+                    <p style="color: red;" id="erreur"></p>
+                </div>
             </div>
             <div class="form-group">
               <label for="adress">Addresse</label>
@@ -80,9 +83,9 @@ function additionPrice(){
             <button type="submit" class="btn btn-primary">Envoyez</button>
           </form>  
         </div>
-      </section>
-      `
-    }
+    </section>
+    `
+  }
   }
 }
 
@@ -117,7 +120,7 @@ additionPrice = function(inputEmail){
   })
 // }
 
-additionPrice = function (inputZipCode){
+ function additionPrice (inputZipCode){
   let regExpZipCode = /^[0-9]{5}$/;
   let testZipCode = regExpZipCode.test(inputZipCode.value);
 

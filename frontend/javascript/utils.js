@@ -47,7 +47,6 @@ function renderProduct(product, type){
                 <p class="card-text">${displayPrice(product.price)} €</p>
                 <select id="options">${options}</select>
                 <p class="card-text"><small class="text-muted"><strong>Référance de produit :</strong> ${product._id}</small></p>
-                <span class="btn btn-primary" id="addToCart">Ajoutez dans le panier</span>
               </div>
             </div>
           </div>
