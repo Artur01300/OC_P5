@@ -61,9 +61,9 @@ function get(key){
  return JSON.parse(localStorage.getItem(key));
 }
 
-function diplayProducts(products){
-  const main = document.getElementById('main');
-  for(const product of products){
-    main.innerHTML += renderProduct(product,'card');
-  }
-}
+// function diplayProducts(products){
+//   const main = document.getElementById('main');
+//   for(const product of products){
+//     main.innerHTML += renderProduct(product,'card');
+//   }
+// }

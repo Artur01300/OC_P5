@@ -13,125 +13,131 @@ function infoPagePanierEmpety(){
 if (productIds){
   ajax("http://localhost:3000/api/furniture")
   .then((products) => {
-    for(const panier of productIds){
-      let store =  `
-        <div class="card" style="width: 16rem">
-        <img src="${panier.image}" class="card-img-top" alt="${panier.name}">
-          <div class="card-body">
-            <h2 class="card-title">${panier.name}</h2>
-            <p class="card-text"><strong>Prix :</strong> ${displayPrice(panier.price)} €</p>
-            <p class="card-text"><strong>Vernie :</strong> ${panier.varnish}</p>
-            <p class="card-text"><strong>Quantité :</strong> ${panier.quantity}</p>
-          </div>
-        </div>
-        `
-        let mainId = document.getElementById('main');
-        mainId.innerHTML += store;
-        ifBasketEmpty.style.display = "none";
+    for(const panierId of productIds){
+      for(let productId of products){
+        if(panierId == productId._id){
+          let store =  `
+            <div class="card" style="width: 16rem">
+            <img src="${productId.imageUrl}" class="card-img-top" alt="${productId.name}">
+              <div class="card-body">
+                <h2 class="card-title">${productId.name}</h2>
+                <p class="card-text"><strong>Prix :</strong> ${displayPrice(productId.price)} €</p>
+                <p class="card-text"><strong>Vernie :</strong> ${productId.varnish}</p>
+              </div>
+            </div>
+            `
+            let mainId = document.getElementById('main');
+            mainId.innerHTML += store;
+            ifBasketEmpty.style.display = "none";
+        }
+      }
     }
+    additionPrice(products)
   }
 )}
 
-additionPrice()
-function additionPrice(){
+function additionPrice(products){
   let showPriceParagraph = document.getElementById('show-totalprices');
   let priceTotals = 0;
-  for(const priceTotal of productIds){
-
-  let price = priceTotal.price / 100;
-  let priceArticle = price * priceTotal.quantity;
-  priceTotals += priceArticle;
-  showPriceParagraph.innerHTML = `<strong>Prix total : </strong>${priceTotals} <strong>€</strong>`;  
-  formShop(priceTotal);
-}
-
-function formShop(priceTotal) {
-  if(priceTotal = true){
-    document.getElementById('form').innerHTML =  
-    `
-    <section id="form-section">
-        <div class="container">
-          <form id="myForm" method="POST">
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <input type="text" name="nom" class="form-control" placeholder="Votre nom" id="frsname" required>
-                </div>
-                <div class="form-group col-md-6">
-                    <input type="text"  name="prenom" class="form-control" placeholder="Votre prénom" id="scdname" required>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="email"></label>
-                    <input type="email" name="email" class="form-control" placeholder="Email" id="email" required>
-                    <p style="color: red;" id="erreur"></p>
-                </div>
-            </div>
-            <div class="form-group">
-              <label for="adress">Addresse</label>
-              <input type="text" name="adresse" class="form-control" id="adress" required>
-            </div>
-            <div class="form-row">
-              <div class="form-group col-md-6">
-                <label for="city">Ville</label>
-                <input type="text" name="city" class="form-control" id="city" required>
-              </div>
-              <div class="form-group col-md-2">
-                <label for="zipcode">Code postale</label>
-                <input type="text" name="zipcode" class="form-control" id="zip-code" required>
-                <span style="color: red;" id="erreur-zipcde"></span>
-              </div>
-            </div>
-            <button type="submit" class="btn btn-primary">Envoyez</button>
-          </form>  
-        </div>
-    </section>
-    `
-  }
+  for(const priceTotal of products){
+    let price = priceTotal.price / 100;
+    console.log(products)
+    console.log(price)
+    let productIds = 1;
+    let priceArticle = price * productIds;
+    // console.log(priceArticle)
+    priceTotals += priceArticle;
+    showPriceParagraph.innerHTML = `<strong>Prix total : </strong>${priceTotals} <strong>€</strong>`;  
+  //   formShop(priceTotal);
   }
 }
 
-formListenVars()
-function formListenVars(){
-  let form = document.querySelector('#myForm');
-  let erreur = document.getElementById('erreur');
-  form.email.addEventListener('change', function(){
-    additionPrice(this);
-  });
-}
+// function formShop(priceTotal) {
+//   if(priceTotal = true){
+//     document.getElementById('form').innerHTML =  
+//     `
+//     <section id="form-section">
+//         <div class="container">
+//           <form id="myForm" method="POST">
+//             <div class="form-row">
+//                 <div class="form-group col-md-6">
+//                     <input type="text" name="nom" class="form-control" placeholder="Votre nom" id="frsname" required>
+//                 </div>
+//                 <div class="form-group col-md-6">
+//                     <input type="text"  name="prenom" class="form-control" placeholder="Votre prénom" id="scdname" required>
+//                 </div>
+//                 <div class="form-group col-md-6">
+//                     <label for="email"></label>
+//                     <input type="email" name="email" class="form-control" placeholder="Email" id="email" required>
+//                     <p style="color: red;" id="erreur"></p>
+//                 </div>
+//             </div>
+//             <div class="form-group">
+//               <label for="adress">Addresse</label>
+//               <input type="text" name="adresse" class="form-control" id="adress" required>
+//             </div>
+//             <div class="form-row">
+//               <div class="form-group col-md-6">
+//                 <label for="city">Ville</label>
+//                 <input type="text" name="city" class="form-control" id="city" required>
+//               </div>
+//               <div class="form-group col-md-2">
+//                 <label for="zipcode">Code postale</label>
+//                 <input type="text" name="zipcode" class="form-control" id="zip-code" required>
+//                 <span style="color: red;" id="erreur-zipcde"></span>
+//               </div>
+//             </div>
+//             <button type="submit" class="btn btn-primary">Envoyez</button>
+//           </form>  
+//         </div>
+//     </section>
+//     `
+//   }
+//   }
 
-additionPrice = function(inputEmail){
-  let emailRegExp = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$', 'g');
-  let testEmail = emailRegExp.test(inputEmail.value);
-  if(testEmail){
-    erreur.innerHTML = '';
-  }else{
-    erreur.innerHTML = 'Adresse e-mail non valide. Veuillez ajoutez un adresse e-mail valide.';
-    erreur.style.fontWeight = 'bolder';
-    erreur.style.fontSize = '1em';
-    // ereurZCode.remove();
-  } 
-};
-
-// ZipCodListenVars()
-// function ZipCodListenVars(){
-  let formZCode = document.querySelector('#myForm');
-  let ereurZCode = document.getElementById('erreur-zipcde');
-  formZCode.zipcode.addEventListener('change', function(){
-    additionPrice(this);
-  })
+// formListenVars()
+// function formListenVars(){
+//   let form = document.querySelector('#myForm');
+//   let erreur = document.getElementById('erreur');
+//   form.email.addEventListener('change', function(){
+//     additionPrice(this);
+//   });
 // }
 
- function additionPrice (inputZipCode){
-  let regExpZipCode = /^[0-9]{5}$/;
-  let testZipCode = regExpZipCode.test(inputZipCode.value);
+// additionPrice = function(inputEmail){
+//   let emailRegExp = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$', 'g');
+//   let testEmail = emailRegExp.test(inputEmail.value);
+//   if(testEmail){
+//     erreur.innerHTML = '';
+//   }else{
+//     erreur.innerHTML = 'Adresse e-mail non valide. Veuillez ajoutez un adresse e-mail valide.';
+//     erreur.style.fontWeight = 'bolder';
+//     erreur.style.fontSize = '1em';
+//     // ereurZCode.remove();
+//   } 
+// };
 
-  if(testZipCode){
-    ereurZCode.innerHTML = '';
-  }else{
-    ereurZCode.innerHTML = 'Code postale non valide. Veuillez ajoutez un code postale valide.';
-    ereurZCode.style.fontWeight = 'bolder';
-    ereurZCode.style.fontSize = '1em';
-  }
-}
+// ZipCodListenVars()
+// // function ZipCodListenVars(){
+//   let formZCode = document.querySelector('#myForm');
+//   let ereurZCode = document.getElementById('erreur-zipcde');
+//   formZCode.zipcode.addEventListener('change', function(){
+//     additionPrice(this);
+//   })
+// }
+
+//  function additionPrice (inputZipCode){
+//   let regExpZipCode = /^[0-9]{5}$/;
+//   let testZipCode = regExpZipCode.test(inputZipCode.value);
+
+//   if(testZipCode){
+//     ereurZCode.innerHTML = '';
+//   }else{
+//     ereurZCode.innerHTML = 'Code postale non valide. Veuillez ajoutez un code postale valide.';
+//     ereurZCode.style.fontWeight = 'bolder';
+//     ereurZCode.style.fontSize = '1em';
+//   }
+// }
 
 //****************** erreur  ******************
 
