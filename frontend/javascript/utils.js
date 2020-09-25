@@ -1,20 +1,20 @@
 function ajax(url){
   return new Promise((resolve, reject) => {
-  let request = new XMLHttpRequest();
-  request.onreadystatechange = function() {
-    if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-      let response = JSON.parse(this.responseText);
-      resolve(response);
-    }
-  };
-  request.open("GET", url);
-  request.send();
+    let request = new XMLHttpRequest();
+    request.onreadystatechange = function() {
+      if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+        let response = JSON.parse(this.responseText);
+        resolve(response);
+      }
+    };
+    request.open("GET", url);
+    request.send();
   });
 }
 
 function displayPrice(price){
-    price = price/100;
-   return price.toFixed(2);
+  price = price/100;
+  return price.toFixed(2);
 }
 
 function renderProduct(product, type){ 
@@ -52,6 +52,17 @@ function renderProduct(product, type){
           </div>
         </div>`;
   }
+  if (type === 'cart'){
+    return  `
+    <div class="card" style="width: 16rem">
+    <img src="${product.imageUrl}" class="card-img-top" alt="${product.name}">
+      <div class="card-body">
+        <h2 class="card-title">${product.name}</h2>
+        <p class="card-text"><strong>Prix :</strong> ${displayPrice(product.price)} €</p>
+      </div>
+    </div>
+  `
+  }
 }
 function store(key, value){
   return localStorage.setItem(key, JSON.stringify(value)); 
@@ -60,10 +71,3 @@ function store(key, value){
 function get(key){
  return JSON.parse(localStorage.getItem(key));
 }
-
-// function diplayProducts(products){
-//   const main = document.getElementById('main');
-//   for(const product of products){
-//     main.innerHTML += renderProduct(product,'card');
-//   }
-// }

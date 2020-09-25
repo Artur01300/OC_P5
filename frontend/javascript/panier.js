@@ -1,99 +1,31 @@
 let productIds = get('products');
 
-infoPagePanierEmpety();
-function infoPagePanierEmpety(){
-  let ifBasketEmpty = document.getElementById('ifBasketEmpty');
-  ifBasketEmpty.innerHTML = 'Le panier est vide, Veuillez ajoutez un produit s\'il vous plaît';
-  ifBasketEmpty.style.color = '#2F4F4F';
-  ifBasketEmpty.style.fontWeight = 'bolder';
-  ifBasketEmpty.style.fontSize = '2em';
-  ifBasketEmpty.style.textAlign = 'center'
-}
-
 if (productIds){
+  document.getElementById('basketEmpty').style.display = 'none';
+  document.getElementById('form-section').style.display = 'block';
   ajax("http://localhost:3000/api/furniture")
   .then((products) => {
-    for(const panierId of productIds){
-      for(let productId of products){
-        if(panierId == productId._id){
-          let store =  `
-            <div class="card" style="width: 16rem">
-            <img src="${productId.imageUrl}" class="card-img-top" alt="${productId.name}">
-              <div class="card-body">
-                <h2 class="card-title">${productId.name}</h2>
-                <p class="card-text"><strong>Prix :</strong> ${displayPrice(productId.price)} €</p>
-                <p class="card-text"><strong>Vernie :</strong> ${productId.varnish}</p>
-              </div>
-            </div>
-            `
-            let mainId = document.getElementById('main');
-            mainId.innerHTML += store;
-            ifBasketEmpty.style.display = "none";
-        }
-      }
-    }
-    additionPrice(products)
-  }
-)}
-
-function additionPrice(products){
-  let showPriceParagraph = document.getElementById('show-totalprices');
-  let priceTotals = 0;
-  for(const priceTotal of products){
-    let price = priceTotal.price / 100;
-    console.log(products)
-    console.log(price)
-    let productIds = 1;
-    let priceArticle = price * productIds;
-    // console.log(priceArticle)
-    priceTotals += priceArticle;
-    showPriceParagraph.innerHTML = `<strong>Prix total : </strong>${priceTotals} <strong>€</strong>`;  
-  //   formShop(priceTotal);
-  }
+    totalPrice(products);
+  });
+}else{
+  document.getElementById('basketEmpty').style.display = 'block';
+  document.getElementById('form-section').style.display = 'none';
 }
 
-// function formShop(priceTotal) {
-//   if(priceTotal = true){
-//     document.getElementById('form').innerHTML =  
-//     `
-//     <section id="form-section">
-//         <div class="container">
-//           <form id="myForm" method="POST">
-//             <div class="form-row">
-//                 <div class="form-group col-md-6">
-//                     <input type="text" name="nom" class="form-control" placeholder="Votre nom" id="frsname" required>
-//                 </div>
-//                 <div class="form-group col-md-6">
-//                     <input type="text"  name="prenom" class="form-control" placeholder="Votre prénom" id="scdname" required>
-//                 </div>
-//                 <div class="form-group col-md-6">
-//                     <label for="email"></label>
-//                     <input type="email" name="email" class="form-control" placeholder="Email" id="email" required>
-//                     <p style="color: red;" id="erreur"></p>
-//                 </div>
-//             </div>
-//             <div class="form-group">
-//               <label for="adress">Addresse</label>
-//               <input type="text" name="adresse" class="form-control" id="adress" required>
-//             </div>
-//             <div class="form-row">
-//               <div class="form-group col-md-6">
-//                 <label for="city">Ville</label>
-//                 <input type="text" name="city" class="form-control" id="city" required>
-//               </div>
-//               <div class="form-group col-md-2">
-//                 <label for="zipcode">Code postale</label>
-//                 <input type="text" name="zipcode" class="form-control" id="zip-code" required>
-//                 <span style="color: red;" id="erreur-zipcde"></span>
-//               </div>
-//             </div>
-//             <button type="submit" class="btn btn-primary">Envoyez</button>
-//           </form>  
-//         </div>
-//     </section>
-//     `
-//   }
-//   }
+function totalPrice(products){
+  let total = 0;
+  for(const productId of productIds){
+    for(let product of products){
+      if(productId == product._id){
+        document.getElementById('main').innerHTML += renderProduct(product,'cart');
+        total += product.price; 
+      }
+    }
+  }
+  document.getElementById('show-totalprices').innerHTML = 'Total : ' + displayPrice(total) + ' €';
+}
+
+
 
 // formListenVars()
 // function formListenVars(){
