@@ -25,70 +25,51 @@ function totalPrice(products){
   document.getElementById('show-totalprices').innerHTML = 'Total : ' + displayPrice(total) + ' €';
 }
 
+// ******************************** Validation Email *********************************
+  let form = document.querySelector('#myForm');
+
+  form.email.addEventListener('change', function(){
+    fromInput(this);
+  });
 
 
-// formListenVars()
-// function formListenVars(){
-//   let form = document.querySelector('#myForm');
-//   let erreur = document.getElementById('erreur');
-//   form.email.addEventListener('change', function(){
-//     additionPrice(this);
-//   });
-// }
+function fromInput(inputEmail){
+  let emailRegExp = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$', 'g');
+  let testEmail = emailRegExp.test(inputEmail.value);
+  let small = inputEmail.nextElementSibling;
+  if(testEmail){
+    small.innerHTML = '';
+    return true;
+  }else{
+    small.innerHTML = 'Adresse e-mail non valide. Veuillez ajoutez un adresse e-mail valide.';
+    return false;
+  }
+};
 
-// additionPrice = function(inputEmail){
-//   let emailRegExp = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$', 'g');
-//   let testEmail = emailRegExp.test(inputEmail.value);
-//   if(testEmail){
-//     erreur.innerHTML = '';
-//   }else{
-//     erreur.innerHTML = 'Adresse e-mail non valide. Veuillez ajoutez un adresse e-mail valide.';
-//     erreur.style.fontWeight = 'bolder';
-//     erreur.style.fontSize = '1em';
-//     // ereurZCode.remove();
-//   } 
-// };
+// ******************************** Validation Zipcode *********************************
 
-// ZipCodListenVars()
-// // function ZipCodListenVars(){
-//   let formZCode = document.querySelector('#myForm');
-//   let ereurZCode = document.getElementById('erreur-zipcde');
-//   formZCode.zipcode.addEventListener('change', function(){
-//     additionPrice(this);
-//   })
-// }
+  form.zipcode.addEventListener('change', function(){
+    validZipcode(this);
+  })
 
-//  function additionPrice (inputZipCode){
-//   let regExpZipCode = /^[0-9]{5}$/;
-//   let testZipCode = regExpZipCode.test(inputZipCode.value);
+function validZipcode (inputZipCode){
+  let regExpZipCode = /^[0-9]{5}$/;
+  let testZipCode = regExpZipCode.test(inputZipCode.value);
+  let small = inputZipCode.nextElementSibling;
+  if(testZipCode){
+    small.innerHTML = '';
+    return true;
+  }else{
+    small.innerHTML = 'Code postale non valide. Veuillez ajoutez un code postale valide.';
+    return false;
+  }
+}
 
-//   if(testZipCode){
-//     ereurZCode.innerHTML = '';
-//   }else{
-//     ereurZCode.innerHTML = 'Code postale non valide. Veuillez ajoutez un code postale valide.';
-//     ereurZCode.style.fontWeight = 'bolder';
-//     ereurZCode.style.fontSize = '1em';
-//   }
-// }
+form.addEventListener('submit', function(e){
+  e.preventDefault();
 
-//****************** erreur  ******************
-
-// let formZCode = document.querySelector('#myForm');
-// let ereurZCode = document.getElementById('erreur-zipcde');
-
-// formZCode.zipcode.addEventListener('change', function(){
-//   let regExpZipCode = /^[0-9]{5}$/;
-//   let testZipCode = regExpZipCode.test(ereurZCode.value);
- 
-//   console.log(testZipCode)
-//   if(testZipCode){
-//     ereurZCode.innerHTML = 'bien';
-//     console.log(testZipCode)
-//     console.log('terst')
-//   }else{
-//     console.log(testZipCode)
-//     ereurZCode.innerHTML = 'Code postale non valide. Veuillez ajoutez un code postale valide.';
-//     ereurZCode.style.fontWeight = 'bolder';
-//     ereurZCode.style.fontSize = '1em';
-//   }
-// })
+  if(fromInput(form.email) && validZipcode(form.zipcode)){
+    form.submit();
+    window.location.href = "commande.html";
+  }
+});

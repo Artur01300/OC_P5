@@ -27,9 +27,6 @@
                             <li class="nav-item active">
                                 <a class="nav-link" href="panier.html">Panier</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="commande.html">Confirmation de commande</a>
-                            </li>
                         </ul>
                     </div>
                 </nav>
@@ -63,8 +60,8 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="email"></label>
-                    <input type="email" name="email" class="form-control" placeholder="Email" id="email" required>
-                    <p style="color: red;" id="erreur"></p>
+                    <input type="text" name="email" class="form-control" placeholder="Email" id="email" required>
+                    <small></small>
                 </div>
             </div>
             <div class="form-group">
@@ -79,7 +76,7 @@
               <div class="form-group col-md-2">
                 <label for="zipcode">Code postale</label>
                 <input type="text" name="zipcode" class="form-control" id="zip-code" required>
-                <span style="color: red;" id="erreur-zipcde"></span>
+                <small></small>
               </div>
             </div>
             <button type="submit" class="btn btn-primary">Envoyez</button>
@@ -89,7 +86,7 @@
 
     <p id="show-totalprices" class="container"></p>
         
-    <!-- <div id="form" class="container"></div> -->
+    <div id="form" class="container"></div>
 
     <footer>
         <div class="bg-dark">

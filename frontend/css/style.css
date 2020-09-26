@@ -29,6 +29,13 @@
     margin-bottom: 20px;
 }
 
+.text-comande{
+    color: green;
+    font-size: 3em;
+    text-align: center;
+    padding-top: 100px;
+}
+
 footer{
     padding-top: 140px;
 }
