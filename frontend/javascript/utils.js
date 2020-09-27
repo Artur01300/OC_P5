@@ -39,7 +39,7 @@ function renderProduct(product, type){
         <div class="card mb-3" style="max-width: 540px;">
           <div class="row no-gutters">
             <div class="col-md-4">
-              <img src="${product.imageUrl}" class="card-img" alt="${product.name}">
+              <img src="${product.imageUrl}" class="card-img" alt="${product.imageUrl}">
             </div>
             <div class="col-md-">
               <div class="card-body">
@@ -53,17 +53,25 @@ function renderProduct(product, type){
         </div>`;
   }
   if (type === 'cart'){
-    return  `
-    <div class="card" style="width: 16rem">
-    <img src="${product.imageUrl}" class="card-img-top" alt="${product.name}">
-      <div class="card-body">
-        <h2 class="card-title">${product.name}</h2>
-        <p class="card-text"><strong>Prix :</strong> ${displayPrice(product.price)} €</p>
+    return`
+    <div class="card mb-3" style="max-width: 540px;">
+      <div class="row no-gutters">
+        <div class="col-md-4">
+          <img src="${product.imageUrl}" class="card-img" alt="${product.imageUrl}">
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">${product.name}</h5>
+            <i class="fas fa-trash col-md-12"></i>
+            <p class="card-text"> ${displayPrice(product.price)} €</p>
+          </div>
+        </div>
       </div>
     </div>
-  `
+    `
   }
 }
+
 function store(key, value){
   return localStorage.setItem(key, JSON.stringify(value)); 
 }

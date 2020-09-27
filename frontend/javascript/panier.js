@@ -15,6 +15,7 @@ if (productIds){
 function totalPrice(products){
   let total = 0;
   for(const productId of productIds){
+    // totalPriceBoucl(productId);
     for(let product of products){
       if(productId == product._id){
         document.getElementById('main').innerHTML += renderProduct(product,'cart');
@@ -25,18 +26,32 @@ function totalPrice(products){
   document.getElementById('show-totalprices').innerHTML = 'Total : ' + displayPrice(total) + ' €';
 }
 
+// function totalPriceBoucl(products){
+//   for(let product of products){
+//     if(productId == product._id){
+//       document.getElementById('main').innerHTML += renderProduct(product,'cart');
+//       total += product.price; 
+//     }
+//   }
+// }
+
 // ******************************** Validation Email *********************************
-  let form = document.querySelector('#myForm');
 
-  form.email.addEventListener('change', function(){
-    fromInput(this);
-  });
+// function form(){
 
+// }
+
+let form = document.querySelector('#myForm');
+
+form.email.addEventListener('change', function(){
+  fromInput(this);
+});
 
 function fromInput(inputEmail){
   let emailRegExp = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$', 'g');
   let testEmail = emailRegExp.test(inputEmail.value);
   let small = inputEmail.nextElementSibling;
+
   if(testEmail){
     small.innerHTML = '';
     return true;
@@ -48,14 +63,15 @@ function fromInput(inputEmail){
 
 // ******************************** Validation Zipcode *********************************
 
-  form.zipcode.addEventListener('change', function(){
-    validZipcode(this);
-  })
+form.zipcode.addEventListener('change', function(){
+  validZipcode(this);
+})
 
 function validZipcode (inputZipCode){
   let regExpZipCode = /^[0-9]{5}$/;
   let testZipCode = regExpZipCode.test(inputZipCode.value);
   let small = inputZipCode.nextElementSibling;
+
   if(testZipCode){
     small.innerHTML = '';
     return true;
