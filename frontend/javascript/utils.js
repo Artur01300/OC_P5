@@ -62,12 +62,12 @@ function renderProduct(product, type){
         <div class="col-md-8">
           <div class="card-body">
             <h5 class="card-title">${product.name}</h5>
-            <i class="fas fa-trash col-md-12"></i>
+            <p class="card-text" id="delete-${product._id}"><i class="fas fa-trash col-md-12"></i></p>
             <p class="card-text"> ${displayPrice(product.price)} €</p>
           </div>
         </div>
       </div>
-    </div>
+    </div
     `
   }
 }

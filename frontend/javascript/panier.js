@@ -5,17 +5,41 @@ if (productIds){
   document.getElementById('form-section').style.display = 'block';
   ajax("http://localhost:3000/api/furniture")
   .then((products) => {
-    totalPrice(products);
+
+    let total = countTotal(productIds, products);
+    displayTotal(total);
+
+    for(const productId of productIds){
+      for(let product of products){
+        if(productId == product._id){
+          document.getElementById('delete-' + product._id).addEventListener('click', function(){
+            console.log('test click',productId);
+            // let removeArticle = productId.removeItem;
+
+            // enlever le produit du storage
+                // verifier si le product id que je veux supprimer est bien dans le panier
+                // trouver l'index ([a, b, c]) du produits dans le tableau
+                // supprimer l'element grace à l'index
+            // mettr à jour le storage
+            // mettre à jour l'affichage
+          })
+        }
+      }
+    }
+
   });
 }else{
   document.getElementById('basketEmpty').style.display = 'block';
   document.getElementById('form-section').style.display = 'none';
 }
 
-function totalPrice(products){
+function displayTotal(total){
+  document.getElementById('show-totalprices').innerHTML = 'Total : ' + displayPrice(total) + ' €';
+}
+
+function countTotal(productIds, products){
   let total = 0;
   for(const productId of productIds){
-    // totalPriceBoucl(productId);
     for(let product of products){
       if(productId == product._id){
         document.getElementById('main').innerHTML += renderProduct(product,'cart');
@@ -23,23 +47,8 @@ function totalPrice(products){
       }
     }
   }
-  document.getElementById('show-totalprices').innerHTML = 'Total : ' + displayPrice(total) + ' €';
+  return total;
 }
-
-// function totalPriceBoucl(products){
-//   for(let product of products){
-//     if(productId == product._id){
-//       document.getElementById('main').innerHTML += renderProduct(product,'cart');
-//       total += product.price; 
-//     }
-//   }
-// }
-
-// ******************************** Validation Email *********************************
-
-// function form(){
-
-// }
 
 let form = document.querySelector('#myForm');
 
