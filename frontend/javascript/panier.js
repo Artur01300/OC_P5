@@ -4,6 +4,7 @@ if (productIds){
   document.getElementById('basketEmpty').style.display = 'none';
   document.getElementById('form-section').style.display = 'block';
   ajax("http://localhost:3000/api/furniture")
+
   .then((products) => {
      
     let total = countTotal(productIds, products);
@@ -13,11 +14,17 @@ if (productIds){
       for(let product of products){
         if(productId == product._id){
         document.getElementById('delete-' + product._id).addEventListener('click', function(){
-          // esc-ce que ce produit est bien inclus dans le panier
-          // récuperer l'id du produit que je veux supprimer de la variable contenat tous les products id
-          // enregistrer la nouvelle liste de product id dans le restorage
-          // raflaichir la page pour que l'affichage corresponde au storage
 
+          // esc-ce que ce produit est bien inclus dans le panier
+          if(productIds.includes(product._id)){
+            // supprimer l'id du produit que je veux supprimer de la variable contenant tous les products id
+            let index = 0;
+            productIds.splice(index,1);
+            // enregistre la nouvelle liste de product id dans le storage
+            store('products', productIds);
+            // raflaiir la page pour que l'affichage corresponde au storage
+            location.reload();
+            }
           })
         }
       }
