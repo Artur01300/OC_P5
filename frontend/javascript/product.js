@@ -46,5 +46,5 @@ function getIdUrl(){
 
 function disableAddToCartButton(){
   addToCart.disabled = true;
-  addToCart.innerHTML = 'Le produit est déjà ajouté';
+  // addToCart.innerHTML = 'Le produit est déjà ajouté';
 }

@@ -5,32 +5,28 @@ if (productIds){
   document.getElementById('form-section').style.display = 'block';
   ajax("http://localhost:3000/api/furniture")
   .then((products) => {
-
+     
     let total = countTotal(productIds, products);
     displayTotal(total);
-
+    
     for(const productId of productIds){
       for(let product of products){
         if(productId == product._id){
-          document.getElementById('delete-' + product._id).addEventListener('click', function(){
-            console.log('test click',productId);
-            // let removeArticle = productId.removeItem;
+        document.getElementById('delete-' + product._id).addEventListener('click', function(){
+          // esc-ce que ce produit est bien inclus dans le panier
+          // récuperer l'id du produit que je veux supprimer de la variable contenat tous les products id
+          // enregistrer la nouvelle liste de product id dans le restorage
+          // raflaichir la page pour que l'affichage corresponde au storage
 
-            // enlever le produit du storage
-                // verifier si le product id que je veux supprimer est bien dans le panier
-                // trouver l'index ([a, b, c]) du produits dans le tableau
-                // supprimer l'element grace à l'index
-            // mettr à jour le storage
-            // mettre à jour l'affichage
           })
         }
       }
     }
-
   });
-}else{
-  document.getElementById('basketEmpty').style.display = 'block';
-  document.getElementById('form-section').style.display = 'none';
+
+  }else{
+    document.getElementById('basketEmpty').style.display = 'block';
+    document.getElementById('form-section').style.display = 'none';
 }
 
 function displayTotal(total){
