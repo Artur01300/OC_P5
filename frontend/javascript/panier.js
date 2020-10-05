@@ -1,73 +1,94 @@
 let productIds = get('products');
 
-if (productIds){
-  document.getElementById('basketEmpty').style.display = 'none';
-  document.getElementById('form-section').style.display = 'block';
+if(productIds){
+  show('form-section');
+  hide('basketEmpty');
+
   ajax("http://localhost:3000/api/furniture")
+  .then((allProducts) => {     
+    let products = getProductsFromCart(allProducts);// cette fonction doit retourner tous les produits de panier
 
-  .then((products) => {     
-    let total = countTotal(productIds, products);
+    let total = countTotal(products);
     displayTotal(total);
-    displayProducts(productIds, products);
-
-    for(const productId of productIds){      
-      for(let product of products){
-        if(productId == product._id){
-          document.getElementById('delete-' + product._id).addEventListener('click', function(){
-
-            if(productIds.includes(product._id)){    
-              console.log(productIds)        
-              let index = productIds.indexOf(product._id);           
-              productIds.splice(index,1);
-              store('products', productIds);
-              location.reload();
-            }    
-            // if(total != 0){
-            //   console.log(total)         
-            //   localStorage.clear('products');
-            //   location.reload();           
-            //   alert(productId + ' : ' + ' Test productIds');
-            // }else{
-            //   alert(productId + ' : ' +' Test a fair');
-            // }
-          })
-        }
-      }
-    }
+    displayProducts(products);
+    listenForProductDeletion(products);
+    listenForFormSubmit();
   });
 }else{     
-  document.getElementById('basketEmpty').style.display = 'block';
-  document.getElementById('form-section').style.display = 'none';
+  show('basketEmpty');
+  hide('form-section');
 }
 
-function displayProducts(productIds, products){
-  for(const productId of productIds){
-    for(let product of products){
-      if(productId == product._id){
-        document.getElementById('main').innerHTML += renderProduct(product,'cart');
-      }
-    }
-  }      
+function listenForProductDeletion(products){    
+  for(let product of products){
+    document.getElementById('delete-' + product._id).addEventListener('click', function(){
+
+      if(productIds.includes(product._id)){    
+        console.log(productIds)        
+        let index = productIds.indexOf(product._id);           
+        productIds.splice(index,1);
+        if(productIds.length === 0){
+          localStorage.clear();
+        }else{
+          store('products', productIds);
+        }
+        location.reload();
+      }  
+    })
+  }
+}
+
+function displayProducts(products){
+  for(let product of products){   
+    document.getElementById('main').innerHTML += renderProduct(product,'cart');
+  }
 }
 
 function displayTotal(total){
   document.getElementById('show-totalprices').innerHTML = 'Total : ' + displayPrice(total) + ' €';
-  if(total === 0){           
-    localStorage.clear('products');
-    location.reload();         
-  }
 }
 
-function countTotal(productIds, products){
+function countTotal(products){
   let total = 0;
-  for(const productId of productIds){
-    for(let product of products){
-      if(productId == product._id){       
-        total += product.price; 
-      }
-    }
+  
+  for(let product of products){      
+    total += product.price; 
   }
   return total;
+}
+
+function show(id){
+  document.getElementById(id).style.display = 'block';
+}
+
+function hide(id){
+  document.getElementById(id).style.display = 'none';
+}
+
+function getProductsFromCart(products){
+  let list = [];
+  let productIds = get('products');//on récupaire le productIds
+  for(const productId of productIds){
+    for(let product of products){
+      if(productId == product._id){        
+        list.push(product)
+      }
+    }      
+  }
+  return list; //returner la liste une fois le boucle est términé
+}
+
+// ******************************** Validation Email *********************************
+
+function listenForFormSubmit(){
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+  
+    if(fromInput(form.email) && validZipcode(form.zipcode)){
+      form.submit();
+      window.location.href = "commande.html";
+    }
+  });
 }
 
 let form = document.querySelector('#myForm');
@@ -110,11 +131,12 @@ function validZipcode (inputZipCode){
   }
 }
 
-form.addEventListener('submit', function(e){
-  e.preventDefault();
+// ******************************** Validation Formulaire *********************************
+// form.addEventListener('submit', function(e){
+//   e.preventDefault();
 
-  if(fromInput(form.email) && validZipcode(form.zipcode)){
-    form.submit();
-    window.location.href = "commande.html";
-  }
-});
+//   if(fromInput(form.email) && validZipcode(form.zipcode)){
+//     form.submit();
+//     window.location.href = "commande.html";
+//   }
+// });
