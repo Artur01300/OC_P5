@@ -5,43 +5,64 @@ if (productIds){
   document.getElementById('form-section').style.display = 'block';
   ajax("http://localhost:3000/api/furniture")
 
-  .then((products) => {
-     
+  .then((products) => {     
     let total = countTotal(productIds, products);
     displayTotal(total);
-    
-    for(const productId of productIds){
+    displayProducts(productIds, products);
+
+    for(const productId of productIds){      
       for(let product of products){
         if(productId == product._id){
-        document.getElementById('delete-' + product._id).addEventListener('click', function(){
+          document.getElementById('delete-' + product._id).addEventListener('click', function(){
 
-          if(productIds.includes(product._id)){            
-            let index = productIds.indexOf(product._id);
-            productIds.splice(index,1);
-            store('products', productIds);
-            location.reload();
-            }
+            if(productIds.includes(product._id)){    
+              console.log(productIds)        
+              let index = productIds.indexOf(product._id);           
+              productIds.splice(index,1);
+              store('products', productIds);
+              location.reload();
+            }    
+            // if(total != 0){
+            //   console.log(total)         
+            //   localStorage.clear('products');
+            //   location.reload();           
+            //   alert(productId + ' : ' + ' Test productIds');
+            // }else{
+            //   alert(productId + ' : ' +' Test a fair');
+            // }
           })
         }
       }
     }
   });
+}else{     
+  document.getElementById('basketEmpty').style.display = 'block';
+  document.getElementById('form-section').style.display = 'none';
+}
 
-  }else{
-    document.getElementById('basketEmpty').style.display = 'block';
-    document.getElementById('form-section').style.display = 'none';
+function displayProducts(productIds, products){
+  for(const productId of productIds){
+    for(let product of products){
+      if(productId == product._id){
+        document.getElementById('main').innerHTML += renderProduct(product,'cart');
+      }
+    }
+  }      
 }
 
 function displayTotal(total){
   document.getElementById('show-totalprices').innerHTML = 'Total : ' + displayPrice(total) + ' €';
+  if(total === 0){           
+    localStorage.clear('products');
+    location.reload();         
+  }
 }
 
 function countTotal(productIds, products){
   let total = 0;
   for(const productId of productIds){
     for(let product of products){
-      if(productId == product._id){
-        document.getElementById('main').innerHTML += renderProduct(product,'cart');
+      if(productId == product._id){       
         total += product.price; 
       }
     }
