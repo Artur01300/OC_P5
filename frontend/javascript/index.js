@@ -11,3 +11,5 @@ function diplayProducts(products){
     main.innerHTML += renderProduct(product,'card');
   }
 }
+
+let prodTst = get('products');

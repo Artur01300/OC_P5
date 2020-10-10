@@ -7,54 +7,35 @@
 </head>
 <body>
 
+    <!-- https://www.youtube.com/watch?v=c3qWHnJJbSY -->
+   
+    <form class="form" id="myForm">
+        <label for="inp_username">User Name</label>
+        <input type="text" name="inp_username" id="inp_username">
+        <label for="inp_password">Password</label>
+        <input type="password" name="inp_password" id="inp_password">
+        <button type="submit">Login</button>
+    </form>
+
     <script>
-        // let tab = [3, 6, 8];
-        // console.log(tab);
+        const myForm = document.getElementById('myForm');
 
-        // let index = tab.indexOf(6);
+        myForm.addEventListener('supbit', function(e){
+            e.preventDefault();
 
-        // if (index > -1) {
-        //     array.splice(index, 1);
-        // }
+            const formData = new formData(this);
 
-        // console.log(tab);
-
-       
-
-        // let idArticle = ["5beaadda1c9d440000a57d98", "5be9cc611c9d440000c1421e", "5beaae361c9d440000a57d99"];
-        // console.log(idArticle)
-
-        // removed = idArticle.splice(0,1);
-        // console.log(removed)
-        // console.log(idArticle)
-
-
-//*********** ça va pas marcher car cet technique marche que pour les numéro et  pas pour les chenes ***************
-
-        // let tArray = ["tech", "on", "the", "net"];
-        
-        // for(let i = 0; i < tArray.length; i++){
-        //     ages(i);
-        // }
-        
-        // function ages(i){
-        //     console.log(i);
-        //     return i >= 2;
-        // }
-
-        // console.log(tArray.findIndex(ages));
-
-
-        // javascript tableau findindex () méthode chaine
-        // https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Array/indexOf
-
-        const beasts = ['ant', 'bison', 'camel', 'duck', 'bison','ant'];
-
-        console.log(beasts.indexOf('ant',2));
-        console.log(beasts.indexOf('bison', 2))
-
-
-    
+            fetch('login.php',{
+                method: 'post',
+                baby: formData
+            }).then(function(response){
+                return response.text();
+            }).then(function(text){
+                console.log(text);
+            }).catch(function(error){
+                console.log(error);
+            })
+        })
     </script>
     
 </body>

@@ -12,7 +12,8 @@ if(productIds){
     displayTotal(total);
     displayProducts(products);
     listenForProductDeletion(products);
-    listenForFormSubmit();
+    listenForFormSubmit(); // envoyer le formulaire
+    // listenForFormSubmit().then(order.orderId); on met le numéro unique qui serra identifiant de la commande
   });
 }else{     
   show('basketEmpty');
@@ -28,6 +29,7 @@ function listenForProductDeletion(products){
         productIds.splice(index,1);
         if(productIds.length === 0){
           localStorage.clear();
+          // localStorage.removeItem('products');
         }else{
           store('products', productIds);
         }
@@ -78,17 +80,16 @@ function getProductsFromCart(products){
 }
 
 // ******************************** Validation Email *********************************
-
 function listenForFormSubmit(){
   let form = document.querySelector('#myForm');
 
   form.addEventListener('submit', function(e){
     e.preventDefault();
     checkInputs();
-    // if(!checkInputs()){
-    //   alert('Merci de corriger le formoulaire');
-    //   return;
-    // }
+    if(!checkInputs()){
+      alert('Merci de corriger le formoulaire');
+      return;
+    }
 
     let payload = {
       contact: {
@@ -100,68 +101,70 @@ function listenForFormSubmit(){
       },
       products: get('products')
     }
-
-    return new Promise((resolve, reject) => {
-      let request = new XMLHttpRequest();
-      request.onreadystatechange = function() {
-        if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-          let response = JSON.parse(this.responseText);
-          resolve(response);
-        }
-      };
-      request.open("POST", "http://localhost:3000/api/furniture/order");
-      // request.send(JSON.stringify(payload));
-      payload = JSON.stringify(payload);
-      request.send(payload);
-    });
+  
+    options = {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+    fetchOrder();
   });
+}
+
+function fetchOrder(){
+  fetch('http://localhost:3000/api/furniture/order', options)
+  .then(order => order.json())
+  .then(order =>{
+    let orderId = order.orderId;
+    window.location.href = "commande.html";
+    console.log(orderId);
+  })
 }
 
 function checkInputs(){
   let email = document.getElementById('email').value;
-  let firstname = document.getElementById('firstname').value;
-  let lastname = document.getElementById('lastname').value;
-  let adresse = document.getElementById('adresse').value;
+  let firstName = document.getElementById('firstname').value;
+  let lastName = document.getElementById('lastname').value;
+  let address = document.getElementById('adresse').value;
   let city = document.getElementById('city').value;
-
+  
   if(isEmailVald(email)){
-    messagErreur('')
+    document.getElementById('msg-email').innerHTML = '';
   }else{
-    messagErreur('Ce champ est obligatoire.')
+    document.getElementById('msg-email').innerHTML = 'Ce champ est obligatoire.';
     return false;
   }
 
-  if(isNameVald(firstname)){
-    messagErreur('');
+  if(isNameVald(firstName)){
+    document.getElementById('msg-firstname').innerHTML = '';
   }else{
-    messagErreur('Ce champ est obligatoire.');
+    document.getElementById('msg-firstname').innerHTML = 'Ce champ est obligatoire.';
     return false;
   }
 
-  if(isNameVald(lastname)){
-    messagErreur('');
+  if(isNameVald(lastName)){
+    document.getElementById('msg-lastname').innerHTML = '';
   }else{
-    messagErreur('Ce champ est obligatoire.');
+    document.getElementById('msg-lastname').innerHTML = 'Ce champ est obligatoire.';
     return false;
   }
 
-  if(isAdresseValide(adresse)){
-    messagErreur('');
+  if(isAdresseValide(address)){
+    document.getElementById('msg-adresse').innerHTML = '';
   }else{
-    messagErreur('Ce champ est obligatoire.');
+    document.getElementById('msg-adresse').innerHTML = 'Ce champ est obligatoire.';
     return false;
   }
 
   if(isAdresseValide(city)){
-    messagErreur('');
+    document.getElementById('msg-city').innerHTML = '';
   }else{
-    messagErreur('Ce champ est obligatoire.');
+    document.getElementById('msg-city').innerHTML = 'Ce champ est obligatoire.';
     return false;
   }
-}
-
-function messagErreur(messages){
-  document.getElementById('msg').innerHTML = messages;
+  return true;
 }
 
 function isNameVald(name){
