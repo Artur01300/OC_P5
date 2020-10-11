@@ -12,8 +12,7 @@ if(productIds){
     displayTotal(total);
     displayProducts(products);
     listenForProductDeletion(products);
-    listenForFormSubmit(); // envoyer le formulaire
-    // listenForFormSubmit().then(order.orderId); on met le numéro unique qui serra identifiant de la commande
+    listenForFormSubmit();
   });
 }else{     
   show('basketEmpty');
@@ -28,8 +27,7 @@ function listenForProductDeletion(products){
         let index = productIds.indexOf(product._id);           
         productIds.splice(index,1);
         if(productIds.length === 0){
-          localStorage.clear();
-          // localStorage.removeItem('products');
+          localStorage.removeItem('products');
         }else{
           store('products', productIds);
         }
@@ -113,15 +111,26 @@ function listenForFormSubmit(){
   });
 }
 
+// sans local storage**********************
 function fetchOrder(){
   fetch('http://localhost:3000/api/furniture/order', options)
   .then(order => order.json())
-  .then(order =>{
-    let orderId = order.orderId;
+  .then(orderResponse =>{
     window.location.href = "commande.html";
-    console.log(orderId);
+    localStorage.setItem('orderId',JSON.stringify(orderResponse.orderId));
   })
 }
+
+
+// function fetchOrder(){
+//   fetch('http://localhost:3000/api/furniture/order', options)
+//   .then(order => order.json())
+//   .then(order =>{
+//     let orderId = order.orderId;
+//     window.location.href = "commande.html";
+//     console.log(orderId);
+//   })
+// }
 
 function checkInputs(){
   let email = document.getElementById('email').value;

@@ -79,3 +79,13 @@ function store(key, value){
 function get(key){
   return JSON.parse(localStorage.getItem(key));
 }
+
+// function fetchOrder(){
+//   fetch('http://localhost:3000/api/furniture/order', options)
+//   .then(order => order.json())
+//   .then(order =>{
+//     let orderId = order.orderId;
+//     window.location.href = "commande.html";
+//     console.log(orderId);
+//   })
+// }
