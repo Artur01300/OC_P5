@@ -7,12 +7,12 @@ if(productIds){
   ajax("http://localhost:3000/api/furniture")
   .then((allProducts) => {     
     let products = getProductsFromCart(allProducts);// cette fonction doit retourner tous les produits de panier
-
     let total = countTotal(products);
     displayTotal(total);
     displayProducts(products);
     listenForProductDeletion(products);
     listenForFormSubmit();
+    priceStorage(total)
   });
 }else{     
   show('basketEmpty');
@@ -43,6 +43,7 @@ function displayProducts(products){
   }
 }
 
+// comment on a réussi récuperer le total de la function countTotal ???
 function displayTotal(total){
   document.getElementById('show-totalprices').innerHTML = 'Total : ' + displayPrice(total) + ' €';
 }
@@ -55,6 +56,13 @@ function countTotal(products){
   }
   return total;
 }
+
+function priceStorage(total){
+  let priceComande = displayPrice(total);
+  console.log(priceComande)
+  localStorage.setItem('price',JSON.stringify(priceComande));
+}
+
 
 function show(id){
   document.getElementById(id).style.display = 'block';
@@ -111,26 +119,16 @@ function listenForFormSubmit(){
   });
 }
 
-// sans local storage**********************
 function fetchOrder(){
   fetch('http://localhost:3000/api/furniture/order', options)
   .then(order => order.json())
   .then(orderResponse =>{
     window.location.href = "commande.html";
+    // window.location.href = "commande.html?abc=displayPrice(price)"; //13/10 problème d'affichage dans le URL
     localStorage.setItem('orderId',JSON.stringify(orderResponse.orderId));
+    console.log(orderResponse)
   })
 }
-
-
-// function fetchOrder(){
-//   fetch('http://localhost:3000/api/furniture/order', options)
-//   .then(order => order.json())
-//   .then(order =>{
-//     let orderId = order.orderId;
-//     window.location.href = "commande.html";
-//     console.log(orderId);
-//   })
-// }
 
 function checkInputs(){
   let email = document.getElementById('email').value;

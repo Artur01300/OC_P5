@@ -73,19 +73,9 @@ function renderProduct(product, type){
 }
 
 function store(key, value){
-  return localStorage.setItem(key, JSON.stringify(value)); 
+  return localStorage.setItem(key, JSON.stringify(value));
 }
 
 function get(key){
   return JSON.parse(localStorage.getItem(key));
 }
-
-// function fetchOrder(){
-//   fetch('http://localhost:3000/api/furniture/order', options)
-//   .then(order => order.json())
-//   .then(order =>{
-//     let orderId = order.orderId;
-//     window.location.href = "commande.html";
-//     console.log(orderId);
-//   })
-// }
