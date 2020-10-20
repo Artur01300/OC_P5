@@ -2,11 +2,11 @@ let productIds = get('products');
 
 if(productIds){
   show('form-section');
-  hide('basketEmpty');
+  hide('basketEmptyInfo');
 
   ajax("http://localhost:3000/api/furniture")
   .then((allProducts) => {     
-    let products = getProductsFromCart(allProducts);// cette fonction doit retourner tous les produits de panier
+    let products = getProductsFromCart(allProducts);
     let total = countTotal(products);
     displayTotal(total);
     displayProducts(products);
@@ -15,8 +15,8 @@ if(productIds){
     priceStorage(total)
   });
 }else{     
-  show('basketEmpty');
   hide('form-section');
+  show('basketEmptyInfo');
 }
 
 function listenForProductDeletion(products){    
@@ -43,7 +43,6 @@ function displayProducts(products){
   }
 }
 
-// comment on a réussi récuperer le total de la function countTotal ???
 function displayTotal(total){
   document.getElementById('show-totalprices').innerHTML = 'Total : ' + displayPrice(total) + ' €';
 }
@@ -59,10 +58,8 @@ function countTotal(products){
 
 function priceStorage(total){
   let priceComande = displayPrice(total);
-  console.log(priceComande)
   localStorage.setItem('price',JSON.stringify(priceComande));
 }
-
 
 function show(id){
   document.getElementById(id).style.display = 'block';
@@ -74,18 +71,16 @@ function hide(id){
 
 function getProductsFromCart(products){
   let list = [];
-  // let productIds = get('products');//je pence qu'on a pas besoin récupéer le get('products') ?
   for(const productId of productIds){
     for(let product of products){
-      if(productId == product._id){  // si le produit existe on push le poduit on questionn
-        list.push(product)
+      if(productId == product._id){
+        list.push(product);
       }
     }      
   }
-  return list; //returner la liste une fois le boucle est términé. il retourne tous les produits du panier
+  return list;
 }
 
-// ******************************** Validation Email *********************************
 function listenForFormSubmit(){
   let form = document.querySelector('#myForm');
 
@@ -124,9 +119,7 @@ function fetchOrder(){
   .then(order => order.json())
   .then(orderResponse =>{
     window.location.href = "commande.html";
-    // window.location.href = "commande.html?abc=displayPrice(price)"; //13/10 problème d'affichage dans le URL
     localStorage.setItem('orderId',JSON.stringify(orderResponse.orderId));
-    console.log(orderResponse)
   })
 }
 
@@ -140,35 +133,35 @@ function checkInputs(){
   if(isEmailVald(email)){
     document.getElementById('msg-email').innerHTML = '';
   }else{
-    document.getElementById('msg-email').innerHTML = 'Ce champ est obligatoire.';
+    document.getElementById('msg-email').innerHTML = 'Ce champ est incorrect.';
     return false;
   }
 
   if(isNameVald(firstName)){
     document.getElementById('msg-firstname').innerHTML = '';
   }else{
-    document.getElementById('msg-firstname').innerHTML = 'Ce champ est obligatoire.';
+    document.getElementById('msg-firstname').innerHTML = 'Ce champ est incorrect.';
     return false;
   }
 
   if(isNameVald(lastName)){
     document.getElementById('msg-lastname').innerHTML = '';
   }else{
-    document.getElementById('msg-lastname').innerHTML = 'Ce champ est obligatoire.';
+    document.getElementById('msg-lastname').innerHTML = 'Ce champ est incorrect.';
     return false;
   }
 
   if(isAdresseValide(address)){
     document.getElementById('msg-adresse').innerHTML = '';
   }else{
-    document.getElementById('msg-adresse').innerHTML = 'Ce champ est obligatoire.';
+    document.getElementById('msg-adresse').innerHTML = 'Ce champ est incorrect.';
     return false;
   }
 
   if(isAdresseValide(city)){
     document.getElementById('msg-city').innerHTML = '';
   }else{
-    document.getElementById('msg-city').innerHTML = 'Ce champ est obligatoire.';
+    document.getElementById('msg-city').innerHTML = 'Ce champ est incorrect.';
     return false;
   }
   return true;

@@ -2,7 +2,7 @@ let url = "http://localhost:3000/api/furniture";
 
 ajax(url)
 .then((products) => {
-  diplayProducts(products); 
+  diplayProducts(products);
 });
 
 function diplayProducts(products){
@@ -11,5 +11,3 @@ function diplayProducts(products){
     main.innerHTML += renderProduct(product,'card');
   }
 }
-
-let prodTst = get('products');

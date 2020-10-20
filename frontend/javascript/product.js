@@ -2,7 +2,6 @@ let url = "http://localhost:3000/api/furniture/" + getIdUrl();
 
 ajax(url).then((product) => {
   displayProduct(product);
-
   let products = [];
   
   if(get('products')){
@@ -46,5 +45,5 @@ function getIdUrl(){
 
 function disableAddToCartButton(){
   addToCart.disabled = true;
-  addToCart.innerHTML = 'Le produit est déjà ajouté';
+  addToCart.innerHTML = 'Le produit est ajouté';
 }

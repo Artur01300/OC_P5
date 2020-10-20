@@ -60,9 +60,9 @@ function renderProduct(product, type){
           <img src="${product.imageUrl}" class="card-img" alt="${product.imageUrl}">
         </div>
         <div class="col-md-8">
-          <div class="card-body">
+          <div class="card-body" style="padding-bottom: 0px">
             <h5 class="card-title">${product.name}</h5>
-            <p class="card-text" id="delete-${product._id}"><i class="fas fa-trash col-md-12"></i></p>
+            <p class="card-text pointer" id="delete-${product._id}"><i class="fas fa-trash col-md-12"></i></p>
             <p class="card-text"> ${displayPrice(product.price)} €</p>
           </div>
         </div>
