@@ -12,7 +12,7 @@ if(productIds){
     displayProducts(products);
     listenForProductDeletion(products);
     listenForFormSubmit();
-    priceStorage(total)
+    priceStorage(total);
   });
 }else{     
   hide('form-section');
@@ -28,6 +28,7 @@ function listenForProductDeletion(products){
         productIds.splice(index,1);
         if(productIds.length === 0){
           localStorage.removeItem('products');
+          localStorage.removeItem('price');
         }else{
           store('products', productIds);
         }
@@ -86,7 +87,6 @@ function listenForFormSubmit(){
 
   form.addEventListener('submit', function(e){
     e.preventDefault();
-    checkInputs();
     if(!checkInputs()){
       alert('Merci de corriger le formoulaire');
       return;
@@ -130,52 +130,50 @@ function checkInputs(){
   let address = document.getElementById('adresse').value;
   let city = document.getElementById('city').value;
   
-  if(isEmailVald(email)){
-    document.getElementById('msg-email').innerHTML = '';
-  }else{
+  document.getElementById('msg-firstname').innerHTML = '';
+  document.getElementById('msg-lastname').innerHTML = '';
+  document.getElementById('msg-adresse').innerHTML = '';
+  document.getElementById('msg-city').innerHTML = '';
+  document.getElementById('msg-email').innerHTML = '';
+
+  let errors = 0;
+
+  if(!isEmailValid(email)){
     document.getElementById('msg-email').innerHTML = 'Ce champ est incorrect.';
-    return false;
+    errors++;
   }
 
-  if(isNameVald(firstName)){
-    document.getElementById('msg-firstname').innerHTML = '';
-  }else{
+  if(!isNameValid(firstName)){
     document.getElementById('msg-firstname').innerHTML = 'Ce champ est incorrect.';
-    return false;
+    errors++;
   }
 
-  if(isNameVald(lastName)){
-    document.getElementById('msg-lastname').innerHTML = '';
-  }else{
+  if(!isNameValid(lastName)){
     document.getElementById('msg-lastname').innerHTML = 'Ce champ est incorrect.';
-    return false;
+    errors++;
   }
 
-  if(isAdresseValide(address)){
-    document.getElementById('msg-adresse').innerHTML = '';
-  }else{
+  if(!isAdresseValid(address)){
     document.getElementById('msg-adresse').innerHTML = 'Ce champ est incorrect.';
-    return false;
+    errors++;
   }
 
-  if(isAdresseValide(city)){
-    document.getElementById('msg-city').innerHTML = '';
-  }else{
+  if(!isAdresseValid(city)){
     document.getElementById('msg-city').innerHTML = 'Ce champ est incorrect.';
-    return false;
+    errors++;
   }
-  return true;
+  return(errors === 0);
 }
 
-function isNameVald(name){
+function isNameValid(name){
   return name.length > 3;
 }
 
-function isEmailVald(email){
+function isEmailValid(email){
   let regExp = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$', 'g');
   return regExp.test(email);
 }
 
-function isAdresseValide(adresse){
+function isAdresseValid(adresse){
   return adresse.length > 3;
 }

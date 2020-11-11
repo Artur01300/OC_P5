@@ -2,7 +2,7 @@ function ajax(url){
   return new Promise((resolve, reject) => {
     let request = new XMLHttpRequest();
     request.onreadystatechange = function() {
-      if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+      if(this.readyState == XMLHttpRequest.DONE && this.status == 200){
         let response = JSON.parse(this.responseText);
         resolve(response);
       }
@@ -18,17 +18,17 @@ function displayPrice(price){
 }
 
 function renderProduct(product, type){ 
-  if (type === 'card'){
+  if(type === 'card'){
     return`
-    <div class="card" style="width: 18rem">
-      <img src="${product.imageUrl}" class="card-img-top" alt="${product.name}">
-      <div class="card-body">
-        <h2 class="card-title">${product.name}</h2>
-        <p class="card-text">${product.description}.</p>
-        <p class="card-text">${displayPrice(product.price)} €</p>
-        <a href="product.html?id=${product._id}" class="btn btn-primary">Voir le produit</a>
-      </div>
-    </div>`
+      <div class="card" style="width: 18rem">
+        <img src="${product.imageUrl}" class="card-img-top" alt="${product.name}">
+        <div class="card-body">
+          <h2 class="card-title">${product.name}</h2>
+          <p class="card-text">${product.description}.</p>
+          <p class="card-text">${displayPrice(product.price)} €</p>
+          <a href="product.html?id=${product._id}" class="btn btn-primary">Voir le produit</a>
+        </div>
+      </div>`
   }
   if(type === 'single'){
     let options = document.getElementById('options');
@@ -52,23 +52,23 @@ function renderProduct(product, type){
           </div>
         </div>`;
   }
-  if (type === 'cart'){
+  if(type === 'cart'){
     return`
-    <div class="card mb-3" style="max-width: 540px;">
-      <div class="row no-gutters">
-        <div class="col-md-4">
-          <img src="${product.imageUrl}" class="card-img" alt="${product.imageUrl}">
-        </div>
-        <div class="col-md-8">
-          <div class="card-body" style="padding-bottom: 0px">
-            <h5 class="card-title">${product.name}</h5>
-            <p class="card-text pointer" id="delete-${product._id}"><i class="fas fa-trash col-md-12"></i></p>
-            <p class="card-text"> ${displayPrice(product.price)} €</p>
+      <div class="card mb-3" style="max-width: 540px;">
+        <div class="row no-gutters">
+          <div class="col-md-4">
+            <img src="${product.imageUrl}" class="card-img" alt="${product.imageUrl}">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body" style="padding-bottom: 0px">
+              <h5 class="card-title">${product.name}</h5>
+              <p class="card-text pointer" id="delete-${product._id}"><i class="fas fa-trash col-md-12"></i></p>
+              <p class="card-text"> ${displayPrice(product.price)} €</p>
+            </div>
           </div>
         </div>
-      </div>
-    </div
-    `
+      </div
+      `
   }
 }
 
