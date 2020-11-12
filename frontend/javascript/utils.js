@@ -79,3 +79,15 @@ function store(key, value){
 function get(key){
   return JSON.parse(localStorage.getItem(key));
 }
+
+let productIdsCount = get('products');
+
+qantProductsId()
+function qantProductsId(){
+
+  if(productIdsCount){
+    document.getElementById('qntIdProduct').innerHTML = productIdsCount.length;
+  }else{
+    document.getElementById('basketIcon').style.display = 'none';
+  }
+}

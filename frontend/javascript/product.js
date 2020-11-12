@@ -27,6 +27,7 @@ function listenForCartAddition(product){
 
     products.push(product._id);
     store('products', products);
+    location.reload();
 
     if(products = get('products')){
       disableAddToCartButton();

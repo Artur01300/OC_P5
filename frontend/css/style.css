@@ -55,3 +55,10 @@ footer{
     color: #138D75  ;
     box-shadow: 10px 5px 5px #5D6D7E;
 }
+.fa-shopping-basket{
+    color: aliceblue;
+    padding-left: 10px;
+}
+#qntIdProduct{
+    color: aliceblue;
+}
