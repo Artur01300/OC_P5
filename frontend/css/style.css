@@ -1,5 +1,29 @@
-.img_logo{
+@font-face {
+    font-family: 'my_underwoodregular';
+    src: url('/frontend/Typo/myunderwood-webfont.woff2') format('woff2'),
+         url('/frontend/Typo/myunderwood-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+.header-main{
     width : 100%;
+    background-color: #f3e9f1;
+    height: 100px;
+    display: flex;
+    align-items: center;
+}
+.img_logo{
+    width: 100px;
+    padding-left: 20px;
+}
+.header-main_title{
+    justify-content: space-between;
+    font-family: 'my_underwoodregular';
+    color: #261624;
+    font-size: 3.8em;
+    padding-top: 20px;
+    padding-left: 20px;
 }
 #main{
     display: flex;
@@ -59,6 +83,6 @@ footer{
     color: aliceblue;
     padding-left: 10px;
 }
-#qntIdProduct{
+#qntProduct{
     color: aliceblue;
 }

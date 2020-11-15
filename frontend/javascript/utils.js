@@ -80,13 +80,10 @@ function get(key){
   return JSON.parse(localStorage.getItem(key));
 }
 
-let productIdsCount = get('products');
-
-qantProductsId()
-function qantProductsId(){
-
-  if(productIdsCount){
-    document.getElementById('qntIdProduct').innerHTML = productIdsCount.length;
+countProductInBascket()
+function countProductInBascket(){
+  if(get('products')){
+    document.getElementById('qntProduct').innerHTML = get('products').length;
   }else{
     document.getElementById('basketIcon').style.display = 'none';
   }

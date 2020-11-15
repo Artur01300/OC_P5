@@ -33,7 +33,7 @@ function listenForProductDeletion(products){
           store('products', productIds);
         }
         location.reload();
-      }  
+      }
     })
   }
 }
@@ -117,7 +117,7 @@ function listenForFormSubmit(){
 function fetchOrder(){
   fetch('http://localhost:3000/api/furniture/order', options)
   .then(order => order.json())
-  .then(orderResponse =>{
+  .then(orderResponse => {
     window.location.href = "commande.html";
     localStorage.setItem('orderId',JSON.stringify(orderResponse.orderId));
   })

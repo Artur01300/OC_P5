@@ -27,12 +27,20 @@ function listenForCartAddition(product){
 
     products.push(product._id);
     store('products', products);
-    location.reload();
 
     if(products = get('products')){
       disableAddToCartButton();
+      setTimeLimitToChantePage();
     }
   });
+}
+
+function setTimeLimitToChantePage(){
+  setTimeout(changeIndexPage, 500);
+}
+
+function changeIndexPage(){
+  window.location.href = 'index.html';
 }
 
 function displayProduct(product){
