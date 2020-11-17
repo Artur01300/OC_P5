@@ -29,7 +29,7 @@ function renderProduct(product, type){
           <a href="product.html?id=${product._id}" class="btn btn-primary">Voir le produit</a>
         </div>
       </div>`
-  }
+    }
   if(type === 'single'){
     let options = document.getElementById('options');
       for(let varnishe of product.varnish){
@@ -80,11 +80,13 @@ function get(key){
   return JSON.parse(localStorage.getItem(key));
 }
 
-countProductInBascket()
-function countProductInBascket(){
+function countTotalProductsInBasket(){
   if(get('products')){
-    document.getElementById('qntProduct').innerHTML = get('products').length;
-  }else{
-    document.getElementById('basketIcon').style.display = 'none';
+    return get('products').length;
   }
+  return 0;//si non tu me renvoie 0
+}
+
+function displayProductsQtyInBasket(){
+  document.getElementById('qntProduct').innerHTML = countTotalProductsInBasket();
 }

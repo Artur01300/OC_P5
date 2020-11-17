@@ -1,4 +1,5 @@
 let url = "http://localhost:3000/api/furniture";
+displayProductsQtyInBasket();
 
 ajax(url)
 .then((products) => {

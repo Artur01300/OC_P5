@@ -1,7 +1,7 @@
 @font-face {
     font-family: 'my_underwoodregular';
-    src: url('/frontend/Typo/myunderwood-webfont.woff2') format('woff2'),
-         url('/frontend/Typo/myunderwood-webfont.woff') format('woff');
+    src: url('/frontend/fonts/myunderwood-webfont.woff2') format('woff2'),
+         url('/frontend/fonts/myunderwood-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 
@@ -79,10 +79,22 @@ footer{
     color: #138D75  ;
     box-shadow: 10px 5px 5px #5D6D7E;
 }
-.fa-shopping-basket{
-    color: aliceblue;
-    padding-left: 10px;
+
+.qntProduct_panier{
+    display: flex;
 }
+
 #qntProduct{
-    color: aliceblue;
+    position: relative;
+    color: white;
+    background-color: grey; 
+    margin-left: 60px;
+    margin-top: -22px;
+    border-radius: 50px;
+    padding: 2px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

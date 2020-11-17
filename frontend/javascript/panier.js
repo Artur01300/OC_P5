@@ -1,4 +1,5 @@
 let productIds = get('products');
+displayProductsQtyInBasket();
 
 if(productIds){
   show('form-section');
@@ -118,8 +119,8 @@ function fetchOrder(){
   fetch('http://localhost:3000/api/furniture/order', options)
   .then(order => order.json())
   .then(orderResponse => {
-    window.location.href = "commande.html";
     localStorage.setItem('orderId',JSON.stringify(orderResponse.orderId));
+    window.location.href = "commande.html";
   })
 }
 

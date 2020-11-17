@@ -1,4 +1,5 @@
 let url = "http://localhost:3000/api/furniture/" + getIdUrl();
+displayProductsQtyInBasket();
 
 ajax(url).then((product) => {
   displayProduct(product);
@@ -30,17 +31,9 @@ function listenForCartAddition(product){
 
     if(products = get('products')){
       disableAddToCartButton();
-      setTimeLimitToChantePage();
+      window.location.href = "index.html";
     }
   });
-}
-
-function setTimeLimitToChantePage(){
-  setTimeout(changeIndexPage, 500);
-}
-
-function changeIndexPage(){
-  window.location.href = 'index.html';
 }
 
 function displayProduct(product){
