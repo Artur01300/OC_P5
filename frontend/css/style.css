@@ -1,7 +1,7 @@
 @font-face {
     font-family: 'my_underwoodregular';
-    src: url('/frontend/fonts/myunderwood-webfont.woff2') format('woff2'),
-         url('/frontend/fonts/myunderwood-webfont.woff') format('woff');
+    src: url('../fonts/myunderwood-webfont.woff2') format('woff2'),
+         url('../fonts/myunderwood-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 
@@ -97,4 +97,10 @@ footer{
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+@media (max-width: 600px){
+    .header-main_title{
+        font-size: 2em;
+    }
 }
