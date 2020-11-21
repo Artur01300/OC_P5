@@ -1,3 +1,4 @@
+//Vérification de la connexion avec node serveur, si le node serveur n'est pas lancé alors on affiche le message d'erreur
 showMessageErrorIfNotResponsByServer();
 function showMessageErrorIfNotResponsByServer(){
   fetch('http://localhost:3000/api/furniture')
@@ -9,10 +10,12 @@ function showMessageErrorIfNotResponsByServer(){
     }
   })
   .catch(err => (
-    document.getElementById('main_titles').innerHTML = "Vous n'êtes pas connecté au serveur, veuillez lancer le node server SVP !")
+    document.getElementById('main_titles').innerHTML = "Vous n'êtes pas connecté au serveur, veuillez lancer le node serveur SVP !")
   );
 }
 
+// L'objet Promise (pour « promesse ») est utilisé pour réaliser des traitements de façon asynchrone.
+// Récupération de la réponse depuis le serveur
 function ajax(url){
   return new Promise((resolve, reject) => {
     let request = new XMLHttpRequest();
@@ -27,12 +30,12 @@ function ajax(url){
   });
 }
 
-function displayPrice(price){
+function displayPrice(price){// Réduction des zéros pour afficher les prix du produit en décimaux 
   price = price/100;
   return price.toFixed(2);
 }
 
-function renderProduct(product, type){ 
+function renderProduct(product, type){// Prépare les produits pour afficher dans les pages différents
   if(type === 'card'){
     return`
       <div class="card" style="width: 18rem">
@@ -87,21 +90,21 @@ function renderProduct(product, type){
   }
 }
 
-function store(key, value){
+function store(key, value){// Permets de stocker id du produit de la commande et le prix total de la commande dans local Storage
   return localStorage.setItem(key, JSON.stringify(value));
 }
 
-function get(key){
+function get(key){// Permets de récupérer id du produit de la commande et le prix total de la commande depuis local Storage
   return JSON.parse(localStorage.getItem(key));
 }
 
-function countTotalProductsInBasket(){
+function countTotalProductsInBasket(){// Contage des nombres produits qui se trouve dans le panier
   if(get('products')){
     return get('products').length;
   }
-  return 0;
+  return 0;//si non tu me renvoie 0
 }
 
-function displayProductsQtyInBasket(){
+function displayProductsQtyInBasket(){//  Affichage de nombre de produits dans la barre de navigation,  à côté 'panier'
   document.getElementById('qntProduct').innerHTML = countTotalProductsInBasket();
 }
