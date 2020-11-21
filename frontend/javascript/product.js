@@ -42,8 +42,14 @@ function displayProduct(product){
 
 function getIdUrl(){
   const urlProd = new URLSearchParams(window.location.search);
+
+  if(!urlProd.get("id")){
+    alert('Attention, vous utilisez un url non autorisée, vous serez redirigé vers la page d\'accueil.');
+    window.location.href = "index.html";
+  }
   return urlProd.get("id");
 }
+
 
 function disableAddToCartButton(){
   addToCart.disabled = true;
