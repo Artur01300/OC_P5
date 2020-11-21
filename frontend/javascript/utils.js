@@ -1,3 +1,18 @@
+showMessageErrorIfNotResponsByServer();
+function showMessageErrorIfNotResponsByServer(){
+  fetch('http://localhost:3000/api/furniture')
+  .then(responsServer => {
+    if (responsServer.ok) {
+      return responsServer.json();
+    } else {
+      return Promise.reject(responsServer.status);
+    }
+  })
+  .catch(err => (
+    document.getElementById('main_titles').innerHTML = "Vous n'êtes pas connecté au serveur, veuillez lancer le node server SVP !")
+  );
+}
+
 function ajax(url){
   return new Promise((resolve, reject) => {
     let request = new XMLHttpRequest();
@@ -84,7 +99,7 @@ function countTotalProductsInBasket(){
   if(get('products')){
     return get('products').length;
   }
-  return 0;//si non tu me renvoie 0
+  return 0;
 }
 
 function displayProductsQtyInBasket(){

@@ -30,6 +30,12 @@
     flex-wrap: wrap;
     justify-content: center;
 }
+#main_titles{
+    color: red;
+    font-size: 1.5em;
+    padding: 40px;
+    text-align: center;
+}
 .card{
     margin: 20px;  
 }
