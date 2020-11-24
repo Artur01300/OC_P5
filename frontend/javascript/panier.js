@@ -1,9 +1,9 @@
-// J'appelle les productids pour faire le comparé son avec Ajax products(ligne 9,) pour affiche le produit dans le panier
+// J'appelle les products pour faire le comparé son avec Ajax products(ligne 9,) pour affiche le produit dans le panier
 // s'il y a pas de même produit
-let productIds = get('products');
-displayProductsQtyInBasket();
+let productsInCart = get('products');
+countTotalProductsInBasket();
 
-if(productIds){
+if(productsInCart){
   show('form-section');
   hide('basketEmptyInfo');
 
@@ -17,23 +17,25 @@ if(productIds){
     listenForFormSubmit();
     priceStorage(total);
   });
-}else{     
+}else{
   hide('form-section');
   show('basketEmptyInfo');
 }
 
+//Écoute les cliques d'utilisateurs pour supprimer les produits
 function listenForProductDeletion(products){    
   for(let product of products){
     document.getElementById('delete-' + product._id).addEventListener('click', function(){
 
-      if(productIds.includes(product._id)){         
-        let index = productIds.indexOf(product._id);           
-        productIds.splice(index,1);
-        if(productIds.length === 0){
+      if(productsInCart.includes(product._id)){         
+        let index = productsInCart.indexOf(product._id);           
+        productsInCart.splice(index,1);
+        if(productsInCart.length === 0){
           localStorage.removeItem('products');
           localStorage.removeItem('price');
-        }else{
-          store('products', productIds);
+        }
+        else{
+          store('products', productsInCart);
         }
         location.reload();
       }
@@ -76,10 +78,10 @@ function hide(id){
 // On compare avec l'id du produit qui se trouve dans local storage puis on affiche le produit comparé grâce à Ajax de même produit qui se trouve dans local storage
 function getProductsFromCart(products){
   let list = [];// Permet de stocker le produit choisi par l'utilisateur dans le tableau "liste" puis on le récupère après la comparaison(ligne81)
-  for(const productId of productIds){
+  for(const productInCart of productsInCart){
     for(let product of products){
-      if(productId == product._id){// Si les 2 ids du produit sont identiques alors ont récupère le produit grâce à la méthode liste.Push(product)
-        list.push(product);
+      if(productInCart.id == product._id){// Si les 2 ids du produit sont identiques alors ont récupère le produit grâce à la méthode liste.Push(product)
+        list.push(productInCart);
       }
     }      
   }

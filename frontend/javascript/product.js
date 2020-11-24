@@ -1,23 +1,10 @@
 //Récupération l'URL de touts les produits + id de produit qui se trouve dans url
 let url = "http://localhost:3000/api/furniture/" + getIdUrl();
-displayProductsQtyInBasket();
+countTotalProductsInBasket();
 
 ajax(url).then((product) => {//on appelle le produit
   displayProduct(product);
-  // On créé un tableau products pour ajouter tous les produits séléctionés par l'utilisateur pour pouvoir vérifier si le produit existe dèjà ou pas,
-  // si il exist on désactive le bouton (ligne 16)
-  let products = [];
-  
-  if(get('products')){
-    products = get('products');
-  }
-
-  //vérifie si le produit que l'utilisateur veux chiosir se trouve déjà dans tableux produis alors on désactive le bouton
-  if(products.includes(product._id)){
-    disableAddToCartButton();
-  }else{
-    listenForCartAddition(product);
-  }
+  listenForCartAddition(product);
 })
 
 function listenForCartAddition(product){
@@ -32,14 +19,47 @@ function listenForCartAddition(product){
       products = get('products');
     }
 
-    products.push(product._id);
-    store('products', products);
+    //Récupération du vernie. Avec if je vérifie si le produit est dans le panier, alors on récupère le produit est son index.
+    //Récupération du produit nous permet de savoir la quantité du produit présent avant pour en suit augmentée de 1
+    //Récupération d'index nous permet de modifier la quantité pour en soute enregistrer dans local storage
+    //Si le produit n'est pas dans panier en pousse le produit dans local storage
+    let varnish = document.getElementById('options').value;
 
-    if(products = get('products')){//Si le produit est dèjà choisi qui se trouve dans le localstorage alors on désacive le bouton pour ne pas pouvoir rajouter
-      // dans le localsorage
-      disableAddToCartButton();
-      window.location.href = "index.html";
+    if(findProductIncCart(product._id, varnish).length > 0){
+      let productInCart = findProductIncCart(product._id, varnish)[0];//Récupération du produit
+      let productIndexInCart = products.findIndex((item) => {//Récupération l'index du produit
+        return item.id === product._id && item.varnish === varnish;
+      });
+
+      products[productIndexInCart].qty = productInCart.qty + 1;
+
+      store('products', products );
+
+    }else{
+      products.push({
+        id: product._id, 
+        varnish: varnish, 
+        qty: 1, 
+        price: product.price,
+        name: product.name,
+        imageUrl: product.imageUrl
+      })
     }
+    store('products', products);
+    location.reload();
+  });
+}
+
+//Récupération du produit après le filtrage de la même vernie est id de produit pour en passe dans le function 'listenForCartAddition'
+function findProductIncCart(id, varnish){
+  let products = [];//Je cherche les produits qu'ils sont au départ vide
+
+  if(get('products')){//Après je prends tous les produits puis je filtre dedans
+    products = get('products');
+  }
+
+  return products.filter((product) => {//Pour chaque produit que tu va filter 
+    return product.id === id && product.varnish === varnish;//Si le product id = à l'id que j'ai passé dans le paramètre 'findProductIncCart' et le product varnish = varnish, alors c'est bien le même
   });
 }
 
@@ -51,14 +71,9 @@ function displayProduct(product){
 function getIdUrl(){
   const urlProd = new URLSearchParams(window.location.search);
 
-  if(!urlProd.get("id")){//Verification de l'id du porduit, si l'id du produit est incorrect on affiche le message d'erreur puit rédiréctionnement de la page
+  if(!urlProd.get("id")){//Vérification de l'id du produit, si l'id du produit est incorrect on affiche le message d'erreur puit redirectionne de la page
     alert('Attention, vous utilisez un url non autorisée, vous serez redirigé vers la page d\'accueil.');
     window.location.href = "index.html";
   }
   return urlProd.get("id");
-}
-
-function disableAddToCartButton(){// Désactivation du bouton de la page product.html si le produit existe déjà dans le panier
-  addToCart.disabled = true;
-  addToCart.innerHTML = 'Le produit est ajouté';
 }

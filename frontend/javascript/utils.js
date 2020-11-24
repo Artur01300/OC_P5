@@ -70,6 +70,7 @@ function renderProduct(product, type){// Prépare les produits pour afficher dan
           </div>
         </div>`;
   }
+ 
   if(type === 'cart'){
     return`
       <div class="card mb-3" style="max-width: 540px;">
@@ -80,13 +81,15 @@ function renderProduct(product, type){// Prépare les produits pour afficher dan
           <div class="col-md-8">
             <div class="card-body" style="padding-bottom: 0px">
               <h5 class="card-title">${product.name}</h5>
+              <p class="card-text"><strong>Vernie :</strong> ${product.varnish}</p>
+              <p class="card-text"><strong>Quantité : </strong>${product.qty}</p>
+              <p class="card-text"><strong>Prix : </strong>${displayPrice(product.price)} €</p>
               <p class="card-text pointer" id="delete-${product._id}"><i class="fas fa-trash col-md-12"></i></p>
-              <p class="card-text"> ${displayPrice(product.price)} €</p>
             </div>
           </div>
         </div>
       </div
-      `
+    `
   }
 }
 
@@ -98,13 +101,17 @@ function get(key){// Permets de récupérer id du produit de la commande et le p
   return JSON.parse(localStorage.getItem(key));
 }
 
-function countTotalProductsInBasket(){// Contage des nombres produits qui se trouve dans le panier
-  if(get('products')){
-    return get('products').length;
+function countTotalProductsInBasket(){//conmpte est affiche les nombre du produits dans le basquet
+  let qountTotalinBasket = 0;
+  let getQtyProducts = get('products');
+  
+  if(getQtyProducts){
+
+    for(let getQtyProduct of getQtyProducts){
+      qountTotalinBasket += getQtyProduct.qty;
+     
+      document.getElementById('qntProduct').innerHTML = qountTotalinBasket;
+    }
   }
   return 0;//si non tu me renvoie 0
-}
-
-function displayProductsQtyInBasket(){//  Affichage de nombre de produits dans la barre de navigation,  à côté 'panier'
-  document.getElementById('qntProduct').innerHTML = countTotalProductsInBasket();
 }
