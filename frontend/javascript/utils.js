@@ -30,12 +30,12 @@ function ajax(url){
   });
 }
 
-function displayPrice(price){// Réduction des zéros pour afficher les prix du produit en décimaux 
+function displayPrice(price){//Réduction des zéros pour afficher les prix du produit en décimaux 
   price = price/100;
   return price.toFixed(2);
 }
 
-function renderProduct(product, type){// Prépare les produits pour afficher dans les pages différents
+function renderProduct(product, type){//Prépare les produits pour afficher dans les pages différents
   if(type === 'card'){
     return`
       <div class="card" style="width: 18rem">
