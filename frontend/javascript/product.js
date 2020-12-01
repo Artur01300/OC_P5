@@ -31,6 +31,12 @@ function listenForCartAddition(product){
         return item.id === product._id && item.varnish === varnish;
       });
 
+      //ça marche pas ****************************
+
+      // if(findProductIncCart(product._id, varnish).length > 0){
+      //   let productInCart = findProductIncCart(product._id, varnish)[0];
+      //   let productIndexInCart = findProductIndex(products, product) 
+
       products[productIndexInCart].qty = productInCart.qty + 1;
 
       store('products', products );

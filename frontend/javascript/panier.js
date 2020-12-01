@@ -13,6 +13,7 @@ if(productsInCart){
     let total = countTotal(products);
     displayTotal(total);
     displayProducts(products);
+    listenForProductAddition(products);
     listenForProductDeletion(products);
     listenForFormSubmit();
     priceStorage(total);
@@ -22,22 +23,42 @@ if(productsInCart){
   show('basketEmptyInfo');
 }
 
+function listenForProductAddition(products){    
+  for(let product of products){ //on boucle sur le produit pour écouter avec plus- chaque produit(product.id)
+    document.getElementById('plus-' + product.id + '-' + product.varnish).addEventListener('click', function(){// On écoute product.id et product.varnish
+      let productsInStorage = get('products'); //J'appelle les produits qui se trouvent dans local Storage pour tourver l'index product.id & product.varnish
+
+      const index = findProductIndex(productsInStorage, product);//Récupération de l'index pour product.id & product.varnish
+      
+      productsInStorage[index].qty = productsInStorage[index].qty + 1;//ça permet d'ajouter le produit par 1
+      store('products', productsInStorage); // On met à jour local Storage
+
+      location.reload();  
+    })
+  }
+}
+
 //Écoute les cliques d'utilisateurs pour supprimer les produits
 function listenForProductDeletion(products){    
-  for(let product of products){
-    document.getElementById('delete-' + product._id).addEventListener('click', function(){
+  for(let product of products){ //on boucle sur le produit pour écouter avec plus- chaque produit(product.id)
+    document.getElementById('minus-' + product.id + '-' + product.varnish).addEventListener('click', function(){// On écoute product.id et product.varnish
+      let productsInStorage = get('products'); //J'appelle les produits qui se trouvent dans local Storage pour tourver l'index product.id & product.varnish
 
-      if(productsInCart.includes(product._id)){         
-        let index = productsInCart.indexOf(product._id);           
-        productsInCart.splice(index,1);
-        if(productsInCart.length === 0){
-          localStorage.removeItem('products');
-          localStorage.removeItem('price');
-        }
-        else{
-          store('products', productsInCart);
-        }
-        location.reload();
+      const index = findProductIndex(productsInStorage, product);//Récupération de l'index pour product.id & product.varnish
+      let qty = productsInStorage[index].qty - 1;//On créé un variable qty pour verifier qu'il soit pas inférieur à 0
+
+      if(qty <= 0){
+        productsInStorage.splice(index, 1);//Suppraision du produit depuis le sorage
+      }else{
+        productsInStorage[index].qty = productsInStorage[index].qty - 1;//ça permet d'ajouter le produit par 1
+      }
+      
+      store('products', productsInStorage); // On met à jour local Storage
+      location.reload();
+
+      if(get('products').length === 0){
+        localStorage.removeItem('products');
+        localStorage.removeItem('price');
       }
     })
   }
@@ -57,7 +78,7 @@ function countTotal(products){
   let total = 0;
   
   for(let product of products){      
-    total += product.price; 
+    total += product.price * product.qty; 
   }
   return total;
 }
