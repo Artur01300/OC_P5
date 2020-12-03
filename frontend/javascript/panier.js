@@ -109,7 +109,22 @@ function getProductsFromCart(products){
   return list;
 }
 
+//Ce function permet de convertire les objets du produit en tableau qui contien les ids du produit. Pour pouvoir envoyer les ids des commendes choisis par les utilisaturs
+//Pour le projet 5 on ne peut envoyer que les ids du produit qui est stoquer dans local storage avec le nom de 'given_id'
+function convertProductsInIdProcuts(){
+  let productsId = get('products');//Récupération des produits pour pouvoir récupérer l'id du produit et ensuit 
+  let storeProductsIdsConverter = [];
+
+  for(let productId of productsId){
+    
+    storeProductsIdsConverter.push(productId.id)
+    store('given_id', storeProductsIdsConverter)
+  }
+}
+
+
 function listenForFormSubmit(){// Écoute la soumission du formulaire de contact
+  convertProductsInIdProcuts();
   let form = document.querySelector('#myForm');
 
   form.addEventListener('submit', function(e){
@@ -127,7 +142,7 @@ function listenForFormSubmit(){// Écoute la soumission du formulaire de contact
         city: document.getElementById('city').value,
         email: document.getElementById('email').value
       },
-      products: get('products')
+      products: get('given_id')
     }
   
     options = {
