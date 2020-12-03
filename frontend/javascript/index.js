@@ -4,6 +4,11 @@ countTotalProductsInBasket();
 ajax(url)
 .then((products) => {
   diplayProducts(products);
+})
+.catch(err =>{
+ if (err === 0){
+    alert("Erreur 500, impossible d'établir une connection au serveur");
+  }
 });
 
 function diplayProducts(products){

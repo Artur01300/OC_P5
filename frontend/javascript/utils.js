@@ -1,33 +1,37 @@
-//Vérification de la connexion avec node serveur, si le node serveur n'est pas lancé alors on affiche le message d'erreur
-showMessageErrorIfNotResponsByServer();
-function showMessageErrorIfNotResponsByServer(){
-  fetch('http://localhost:3000/api/furniture')
-  .then(responsServer => {
-    if (responsServer.ok) {
-      return responsServer.json();
-    } else {
-      return Promise.reject(responsServer.status);
-    }
-  })
-  .catch(err => (
-    document.getElementById('main_titles').innerHTML = "Vous n'êtes pas connecté au serveur, veuillez lancer le node serveur SVP !")
-  );
-}
-
 // L'objet Promise (pour « promesse ») est utilisé pour réaliser des traitements de façon asynchrone.
 // Récupération de la réponse depuis le serveur
+
+// function ajax(url){
+//   return new Promise((resolve, reject) => {
+//     let request = new XMLHttpRequest();
+//     request.onreadystatechange = function() {
+//       if(this.readyState == XMLHttpRequest.DONE && this.status == 200){
+//         let response = JSON.parse(this.responseText);
+//         resolve(response);
+//       }
+//     };
+//     request.open("GET", url);
+//     request.send();
+//   });
+// }
+
 function ajax(url){
-  return new Promise((resolve, reject) => {
-    let request = new XMLHttpRequest();
-    request.onreadystatechange = function() {
-      if(this.readyState == XMLHttpRequest.DONE && this.status == 200){
-        let response = JSON.parse(this.responseText);
-        resolve(response);
+  const promise = new Promise(function (resolve, reject){
+    const request = new XMLHttpRequest();
+    request.open("GET",url);
+    request.onreadystatechange = function(){  
+      if(this.readyState === XMLHttpRequest.DONE){
+
+        if(this.status === 200){
+          resolve(JSON.parse(request.responseText));
+        }else{
+          reject(request.status);
+        }
       }
     };
-    request.open("GET", url);
     request.send();
   });
+  return promise;
 }
 
 function displayPrice(price){//Réduction des zéros pour afficher les prix du produit en décimaux 
