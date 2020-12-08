@@ -1,8 +1,8 @@
-//Récupération l'URL de touts les produits + id de produit qui se trouve dans url
-let url = "http://localhost:3000/api/furniture/" + getIdUrl();
+//Récupération l'URL de touts les produits + id de produit, choisi par l'utilisateur, qui se trouve dans url
+let url = "http://localhost:3000/api/furniture/" + getDataFromUrl('id');
 countTotalProductsInBasket();
 
-ajax(url).then((product) => {//on appelle le produit
+ajax(url).then((product) => {//On appelle le produit
   displayProduct(product);
   listenForCartAddition(product);
 })
@@ -13,35 +13,28 @@ function listenForCartAddition(product){
   addToCart.addEventListener('click', () => {
     let products = [];
     //On créé ce tableau vide pour pouvoir ajouter les produits choisi par l'utilisateur dans le tableau 'products',
-    //pour ensuit stoquer les ids du produits dans localStorage(ligne 35)
+    //pour ensuit stoquer les produits dans localStorage(ligne 34)
     
-    if(get('products')){// Après verification du produit, on ajoute les produit dans le 'produitc', pour ensuit stoquer l'id du prosuit dans localStorage
+    //On vérifie si lutilisateur a choisi son produit, si oui, on ajoute les produits dans les "products", pour ensuite les stocker dans local Storage
+    if(get('products')){
       products = get('products');
     }
 
     //Récupération du vernie. Avec if je vérifie si le produit est dans le panier, alors on récupère le produit est son index.
-    //Récupération du produit nous permet de savoir la quantité du produit présent avant pour en suit augmentée de 1
+    //Récupération du produit nous permet de savoir la quantité du produit présent avant, pour en suit augmentée de 1
     //Récupération d'index nous permet de modifier la quantité pour en soute enregistrer dans local storage
     //Si le produit n'est pas dans panier en pousse le produit dans local storage
     let varnish = document.getElementById('options').value;
-
-    if(findProductIncCart(product._id, varnish).length > 0){
+    if(findProductIncCart(product._id, varnish).length > 0){//Je vérifie si le produit est dans le panier, alors on récupère le produit et son index.
       let productInCart = findProductIncCart(product._id, varnish)[0];//Récupération du produit
-      let productIndexInCart = products.findIndex((item) => {//Récupération l'index du produit
-        return item.id === product._id && item.varnish === varnish;
-      });
-
-      //ça marche pas ****************************
-
-      // if(findProductIncCart(product._id, varnish).length > 0){
-      //   let productInCart = findProductIncCart(product._id, varnish)[0];
-      //   let productIndexInCart = findProductIndex(products, product) 
-
+      let productIndexInCart = findProductIndex(products, productInCart)//Récupère l'index du produit et on insère dans 'products[productIndexInCart]'/ligne 33)
+      
+      //On ajoute un produit(productInCart.qty + 1) par click dans le tableau products puis on met à jour local storage
       products[productIndexInCart].qty = productInCart.qty + 1;
 
       store('products', products );
 
-    }else{
+    }else{//Si les produits existent déjà, on stocke tout simplement dans lacal storage
       products.push({
         id: product._id, 
         varnish: varnish, 
@@ -52,11 +45,11 @@ function listenForCartAddition(product){
       })
     }
     store('products', products);
-    location.reload();
+    location.reload(); 
   });
 }
 
-//Récupération du produit après le filtrage de la même vernie est id de produit pour en passe dans le function 'listenForCartAddition'
+//Récupération du produit après le filtrage de la même vernie est l'id de produit pour en suit faire passer dans le function 'listenForCartAddition'
 function findProductIncCart(id, varnish){
   let products = [];//Je cherche les produits qu'ils sont au départ vide
 
@@ -71,15 +64,4 @@ function findProductIncCart(id, varnish){
 
 function displayProduct(product){
   document.getElementById('main').innerHTML += renderProduct(product, 'single');
-}
-
-//Récupération l'URL qui a été créé dans utils.js/ligne 47
-function getIdUrl(){
-  const urlProd = new URLSearchParams(window.location.search);
-
-  if(!urlProd.get("id")){//Vérification de l'id du produit, si l'id du produit est incorrect on affiche le message d'erreur puit redirectionne de la page
-    alert('Attention, vous utilisez un url non autorisée, vous serez redirigé vers la page d\'accueil.');
-    window.location.href = "index.html";
-  }
-  return urlProd.get("id");
 }

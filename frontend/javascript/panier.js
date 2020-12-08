@@ -1,5 +1,4 @@
-// J'appelle les products pour faire le comparé son avec Ajax products(ligne 9,) pour affiche le produit dans le panier
-// s'il y a pas de même produit
+// J'appelle les products (let productsInCart = get('products'))
 let productsInCart = get('products');
 countTotalProductsInBasket();
 
@@ -9,14 +8,13 @@ if(productsInCart){
 
   ajax("http://localhost:3000/api/furniture")
   .then((allProducts) => {     
-    let products = getProductsFromCart(allProducts);
+    let products = getProductsFromCart(allProducts);//Récupération du produit choisi par l'utilisateur 
     let total = countTotal(products);
     displayTotal(total);
     displayProducts(products);
     listenForProductAddition(products);
     listenForProductDeletion(products);
-    listenForFormSubmit();
-    priceStorage(total);
+    listenForFormSubmit(total);
   });
 }else{
   hide('form-section');
@@ -24,14 +22,14 @@ if(productsInCart){
 }
 
 function listenForProductAddition(products){    
-  for(let product of products){ //on boucle sur le produit pour écouter avec plus- chaque produit(product.id)
-    document.getElementById('plus-' + product.id + '-' + product.varnish).addEventListener('click', function(){// On écoute product.id et product.varnish
-      let productsInStorage = get('products'); //J'appelle les produits qui se trouvent dans local Storage pour tourver l'index product.id & product.varnish
+  for(let product of products){//On boucle sur le produit pour écouter avec plus- chaque product.id & product.varnish
+    document.getElementById('plus-' + product.id + '-' + product.varnish).addEventListener('click', function(){//On écoute product.id et product.varnish
+      let productsInStorage = get('products');//J'appelle les produits qui se trouvent dans local storage pour trouver l'index product.id & product.varnish
 
       const index = findProductIndex(productsInStorage, product);//Récupération de l'index pour product.id & product.varnish
       
       productsInStorage[index].qty = productsInStorage[index].qty + 1;//ça permet d'ajouter le produit par 1
-      store('products', productsInStorage); // On met à jour local Storage
+      store('products', productsInStorage); //On met à jour local Storage
 
       location.reload();  
     })
@@ -40,25 +38,24 @@ function listenForProductAddition(products){
 
 //Écoute les cliques d'utilisateurs pour supprimer les produits
 function listenForProductDeletion(products){    
-  for(let product of products){ //on boucle sur le produit pour écouter avec plus- chaque produit(product.id)
-    document.getElementById('minus-' + product.id + '-' + product.varnish).addEventListener('click', function(){// On écoute product.id et product.varnish
-      let productsInStorage = get('products'); //J'appelle les produits qui se trouvent dans local Storage pour tourver l'index product.id & product.varnish
+  for(let product of products){ //On boucle sur le produit pour écouter avec plus- chaque produit(product.id)
+    document.getElementById('minus-' + product.id + '-' + product.varnish).addEventListener('click', function(){//On écoute product.id et product.varnish
+      let productsInStorage = get('products');//J'appelle les produits qui se trouvent dans local Storage pour tourver l'index product.id & product.varnish
 
       const index = findProductIndex(productsInStorage, product);//Récupération de l'index pour product.id & product.varnish
-      let qty = productsInStorage[index].qty - 1;//On créé un variable qty pour verifier qu'il soit pas inférieur à 0
+      let qty = productsInStorage[index].qty - 1;//On crée un variable qty pour vérifier qu'il ne soit pas inférieur à 0
 
       if(qty <= 0){
         productsInStorage.splice(index, 1);//Suppraision du produit depuis le sorage
       }else{
-        productsInStorage[index].qty = productsInStorage[index].qty - 1;//ça permet d'ajouter le produit par 1
+        productsInStorage[index].qty = productsInStorage[index].qty - 1;//ça permet de soustraire le produit par 1
       }
       
-      store('products', productsInStorage); // On met à jour local Storage
+      store('products', productsInStorage);//On met à jour local Storage
       location.reload();
 
-      if(get('products').length === 0){
+      if(get('products').length === 0){//S'il n’y a rien, on enlève dans local storage les Key: 'products', 'price', 'given_id'
         localStorage.removeItem('products');
-        localStorage.removeItem('price');
       }
     })
   }
@@ -83,57 +80,36 @@ function countTotal(products){
   return total;
 }
 
-function priceStorage(total){// Sauvegarde de prix total de la commande pour récupérer depuis commande js/ligne 2
-  let priceComande = displayPrice(total);
-  localStorage.setItem('price',JSON.stringify(priceComande));
-}
-
-function show(id){
-  document.getElementById(id).style.display = 'block';
-}
-
-function hide(id){
-  document.getElementById(id).style.display = 'none';
-}
-
-// On compare avec l'id du produit qui se trouve dans local storage puis on affiche le produit comparé grâce à Ajax de même produit qui se trouve dans local storage
+//Récupération du produit choisi par l'utilisateur 
 function getProductsFromCart(products){
-  let list = [];// Permet de stocker le produit choisi par l'utilisateur dans le tableau "liste" puis on le récupère après la comparaison(ligne81)
+  let list = [];//Permet de stocker le produit choisi par l'utilisateur dans le tableau "liste" puis on le récupère après la comparaison
   for(const productInCart of productsInCart){
-    for(let product of products){
-      if(productInCart.id == product._id){// Si les 2 ids du produit sont identiques alors ont récupère le produit grâce à la méthode liste.Push(product)
-        list.push(productInCart);
-      }
-    }      
+    list.push(productInCart);
   }
   return list;
 }
 
-//Ce function permet de convertire les objets du produit en tableau qui contien les ids du produit. Pour pouvoir envoyer les ids des commendes choisis par les utilisaturs
-//Pour le projet 5 on ne peut envoyer que les ids du produit qui est stoquer dans local storage avec le nom de 'given_id'
-function convertProductsInIdProcuts(){
-  let productsId = get('products');//Récupération des produits pour pouvoir récupérer l'id du produit et ensuit 
-  let storeProductsIdsConverter = [];
+//Je récupère ids du produit. Pour pouvoir envoyer les Ids des commendes choisies par les utilisateurs
+function getProductsId(){
+  let ids = [];
 
-  for(let productId of productsId){
-    
-    storeProductsIdsConverter.push(productId.id)
-    store('given_id', storeProductsIdsConverter)
+  for(let product of get('products')){
+    ids.push(product.id);
   }
+
+  return ids;
 }
 
-
-function listenForFormSubmit(){// Écoute la soumission du formulaire de contact
-  convertProductsInIdProcuts();
+function listenForFormSubmit(total){//Écoute la soumission du formulaire de contact
   let form = document.querySelector('#myForm');
 
   form.addEventListener('submit', function(e){
     e.preventDefault();
-    if(!checkInputs()){// Si le champ du formulaire est incorrect on envoie alert sinon, on envoie les valeurs des champs du formulaire avec le produit choisi
+    if(!checkInputs()){//Si le champ du formulaire est incorrect on envoie alert sinon, on envoie les valeurs des champs du formulaire avec le produit choisi
       alert('Merci de corriger le formoulaire');
       return;
     }
-// Envoie les valeurs du formulaire avec le/les produits choisis par l'utilisateur au serveur
+    //Envoie les valeurs du formulaire avec le/les produits choisis par l'utilisateur au serveur
     let payload = {
       contact: {
         firstName: document.getElementById('firstname').value,
@@ -142,7 +118,7 @@ function listenForFormSubmit(){// Écoute la soumission du formulaire de contact
         city: document.getElementById('city').value,
         email: document.getElementById('email').value
       },
-      products: get('given_id')
+      products: getProductsId()
     }
   
     options = {
@@ -152,21 +128,18 @@ function listenForFormSubmit(){// Écoute la soumission du formulaire de contact
         'Content-Type': 'application/json'
       }
     }
-    fetchOrder();
+    //Récupération l'id de la confirmation de la commande
+    fetch('http://localhost:3000/api/furniture/order', options)
+    .then(order => order.json())
+    .then(orderResponse => {
+  
+      const orderId = JSON.stringify(orderResponse.orderId);
+      window.location.href = "commande.html?order_id=" + orderId + '&total=' + total;
+    })
   });
 }
 
-function fetchOrder(){// Récupération l'id de la confirmation de la commande
-  fetch('http://localhost:3000/api/furniture/order', options)
-  .then(order => order.json())
-  .then(orderResponse => {
-    localStorage.setItem('orderId',JSON.stringify(orderResponse.orderId));// Stockage "l'id de la confirmation de la commande dans local storage pour afficher
-    // dans la page commande.js/ligne 1
-    window.location.href = "commande.html";
-  })
-}
-
-function checkInputs(){//  Vérification la valeur des champs du formulaire
+function checkInputs(){//Vérification la valeur des champs du formulaire
   let email = document.getElementById('email').value;
   let firstName = document.getElementById('firstname').value;
   let lastName = document.getElementById('lastname').value;
@@ -179,16 +152,16 @@ function checkInputs(){//  Vérification la valeur des champs du formulaire
   document.getElementById('msg-city').innerHTML = '';
   document.getElementById('msg-email').innerHTML = '';
 
-  let errors = 0;// Création variable 'errores', qui nous permet encrémenter les erreus (afficher le text rouge si la valeur du formoulaire est incorrect)
+  let errors = 0;//Création variable 'errores', qui nous permet encrémenter les erreus (afficher le text rouge si la valeur du formoulaire est incorrect)
 
-  if(!isEmailValid(email)){// Si les inputs du champ sont incorrects on affiche le message erreur
+  if(!isEmailValid(email)){//Si les inputs du champ sont incorrects on affiche le message erreur
     document.getElementById('msg-email').innerHTML = 'Ce champ est incorrect.';
     errors++;
   }
 
   if(!isNameValid(firstName)){
     document.getElementById('msg-firstname').innerHTML = 'Ce champ est incorrect.';
-    errors++;// On incrémente l'error s'il y a une
+    errors++;//On incrémente l'error s'il y a une
   }
 
   if(!isNameValid(lastName)){
@@ -205,18 +178,18 @@ function checkInputs(){//  Vérification la valeur des champs du formulaire
     document.getElementById('msg-city').innerHTML = 'Ce champ est incorrect.';
     errors++;
   }
-  return(errors === 0);// S'il n'y a pas d'erreur, on retourne 
+  return(errors === 0);//S'il n'y a pas d'erreur, on retourne 
 }
 
-function isNameValid(name){// Contrôle les valeurs du Chems du formulaire
+function isNameValid(name){//Contrôle les valeurs du champs du formulaire
   return name.length > 3;
 }
 
-function isEmailValid(email){// Contrôle les valeurs du Chems du formulaire
+function isEmailValid(email){//Contrôle les valeurs du champs du formulaire
   let regExp = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$', 'g');
   return regExp.test(email);
 }
 
-function isAdresseValid(adresse){// Contrôle les valeurs du Chems du formulaire
+function isAdresseValid(adresse){//Contrôle les valeurs du champ du formulaire
   return adresse.length > 3;
 }

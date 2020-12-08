@@ -1,8 +1,8 @@
-document.getElementById('orderId').innerHTML = get('orderId');// Récupération confirmation de la commande depuis LocalStorage puis on affiche 
-document.getElementById('price').innerHTML = get('price');// Récupération le prix total de la commande depuis LocalStorage puis on affiche 
+let orderId = getDataFromUrl('order_id');
+let total = getDataFromUrl('total');
 
-localStorage.clear();// Suppression local storage 
+document.getElementById('orderId').innerHTML = orderId;//Récupération confirmation de la commande depuis URL puis on affiche 
+document.getElementById('price').innerHTML = displayPrice(total);//Récupération le prix total de la commande depuis URL puis on affiche 
+hide('qntProduct');
 
-if(!get('orderId')){// Désactivation l'élément qui affichait les nombres du produit (Bar de navigation/ à côté 'panier")
-    document.getElementById('qntProduct').style.display = 'none';
-}
+localStorage.clear();//Suppression local storage

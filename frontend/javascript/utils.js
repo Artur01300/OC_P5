@@ -1,20 +1,3 @@
-// L'objet Promise (pour « promesse ») est utilisé pour réaliser des traitements de façon asynchrone.
-// Récupération de la réponse depuis le serveur
-
-// function ajax(url){
-//   return new Promise((resolve, reject) => {
-//     let request = new XMLHttpRequest();
-//     request.onreadystatechange = function() {
-//       if(this.readyState == XMLHttpRequest.DONE && this.status == 200){
-//         let response = JSON.parse(this.responseText);
-//         resolve(response);
-//       }
-//     };
-//     request.open("GET", url);
-//     request.send();
-//   });
-// }
-
 function ajax(url){
   const promise = new Promise(function (resolve, reject){
     const request = new XMLHttpRequest();
@@ -25,7 +8,9 @@ function ajax(url){
         if(this.status === 200){
           resolve(JSON.parse(request.responseText));
         }else{
-          reject(request.status);
+          alert("Erreur, impossible d'établir une connection au serveur");
+          console.log('Erreur', request.status);
+          reject();
         }
       }
     };
@@ -100,16 +85,16 @@ function renderProduct(product, type){//Prépare les produits pour afficher dans
   }
 }
 
-function store(key, value){//Permets de stocker id du produit de la commande et le prix total de la commande dans local Storage
+function store(key, value){//Permets de stocker les éléments dans local storage
   return localStorage.setItem(key, JSON.stringify(value));
 }
 
-function get(key){// Permets de récupérer id du produit de la commande et le prix total de la commande depuis local Storage
+function get(key){//Permets de récupérer les éléments depuis local storage
   return JSON.parse(localStorage.getItem(key));
 }
 
 function countTotalProductsInBasket(){
-  let qountTotalinBasket = 0;//Permets d'afficher nombre produit 0 si on n'a pas produit dans le panier
+  let qountTotalinBasket = 0;//En premier temps si le panier est vide alors par défaut on affiche 0
   let getQtyProducts = get('products');
   
   if(getQtyProducts){
@@ -121,7 +106,7 @@ function countTotalProductsInBasket(){
   return qountTotalinBasket;//Si non tu me renvoie 0
 }
 
-displayQtyItemsInBasket();
+displayQtyItemsInBasket()
 function displayQtyItemsInBasket(){
   const qty = countTotalProductsInBasket();
 
@@ -132,4 +117,24 @@ function findProductIndex(products, product){
   return products.findIndex((item) => {//Récupération l'index du produit
     return item.id === product.id && item.varnish === product.varnish;
   });
+}
+
+function show(id){
+  document.getElementById(id).style.display = 'block';
+}
+
+function hide(id){
+  document.getElementById(id).style.display = 'none';
+}
+
+//Récupération l'URL/Permets de récupérer le prix total et la confirmation de la commande pour afficher dans la page commande.js
+function getDataFromUrl(key){
+  const urlProd = new URLSearchParams(window.location.search);
+
+  if(!urlProd.get(key)){//Vérification de l'id du produit, si l'id du produit est incorrect on affiche le message d'erreur puit redirectionne de la page
+    alert('Attention, vous utilisez un url non autorisée, vous serez redirigé vers la page d\'accueil.');
+    window.location.href = "index.html";
+  }
+  
+  return urlProd.get(key);
 }
