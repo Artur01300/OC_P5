@@ -1,5 +1,6 @@
 // J'appelle les products (let productsInCart = get('products'))
 let productsInCart = get('products');
+displayQtyItemsInBasket();
 
 if(productsInCart){
   show('form-section');
@@ -14,7 +15,6 @@ if(productsInCart){
     listenForProductAddition(products);
     listenForProductDeletion(products);
     listenForFormSubmit(total);
-    displayQtyItemsInBasket();
   });
 }else{
   hide('form-section');
