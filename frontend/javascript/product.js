@@ -17,7 +17,7 @@ function listenForCartAddition(product){
     //On créé ce tableau vide pour pouvoir ajouter les produits choisi par l'utilisateur dans le tableau 'products',
     //pour ensuit stoquer les produits dans localStorage(ligne 37)
     
-    //On vérifie si lutilisateur a choisi son produit, si oui, on ajoute les produits dans les "products", pour ensuite les stocker dans local Storage
+    //On vérifie si le même produit existe déjà dans le panier alors on récupère ses produits et en suit on les enregistre dans le tableau 'products' pour trouver en suit l'index du produit
     if(get('products')){
       products = get('products');
     }
@@ -34,9 +34,7 @@ function listenForCartAddition(product){
       //On ajoute un produit(productInCart.qty + 1) par click dans le tableau products puis on met à jour local storage
       products[productIndexInCart].qty = productInCart.qty + 1;
 
-      store('products', products );
-
-    }else{//Si les produits existent déjà, on stocke tout simplement dans lacal storage
+    }else{//Sinon stocke tout simplement dans lacal storage
       products.push({
         id: product._id, 
         varnish: varnish, 

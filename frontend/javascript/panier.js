@@ -5,17 +5,15 @@ displayQtyItemsInBasket();
 if(productsInCart){
   show('form-section');
   hide('basketEmptyInfo');
+    
+  let total = countTotal(productsInCart);
+  displayTotal(total);
   
-  ajax("http://localhost:3000/api/furniture")
-  .then((allProducts) => {     
-    let products = getProductsFromCart(allProducts);//Récupération du produit choisi par l'utilisateur 
-    let total = countTotal(products);
-    displayTotal(total);
-    displayProducts(products);
-    listenForProductAddition(products);
-    listenForProductDeletion(products);
-    listenForFormSubmit(total);
-  });
+  displayProducts(productsInCart);
+  listenForProductAddition(productsInCart);
+  listenForProductDeletion(productsInCart);
+  listenForFormSubmit(total);
+
 }else{
   hide('form-section');
   show('basketEmptyInfo');
@@ -79,16 +77,6 @@ function countTotal(products){//Compte les prix des produits
   }
   return total;
 }
-
-//Récupération du produit choisi par l'utilisateur 
-function getProductsFromCart(products){
-  let list = [];//Permet de stocker le produit choisi par l'utilisateur dans le tableau "liste" puis on return
-  for(const productInCart of productsInCart){
-    list.push(productInCart);
-  }
-  return list;
-}
-
 //Je récupère ids du produit. Pour pouvoir envoyer les Ids des commendes choisies par les utilisateurs au serveur (payload)
 function getProductsId(){
   let ids = [];
