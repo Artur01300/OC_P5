@@ -1,4 +1,4 @@
-function ajax(url){
+function ajax(url){//Récupération de la réponse du serveur 
   const promise = new Promise(function (resolve, reject){
     const request = new XMLHttpRequest();
     request.open("GET",url);
@@ -7,7 +7,7 @@ function ajax(url){
 
         if(this.status === 200){
           resolve(JSON.parse(request.responseText));
-        }else{
+        }else{//Si le nodeSerer n'est pas lancé alors on affiche le message d'alert
           alert("Erreur, impossible d'établir une connection au serveur");
           console.log('Erreur', request.status);
           reject();
@@ -93,7 +93,7 @@ function get(key){//Permets de récupérer les éléments depuis local storage
   return JSON.parse(localStorage.getItem(key));
 }
 
-function countTotalProductsInBasket(){
+function countTotalProductsInBasket(){//Compte des nombres produits ajoutés dans le panier
   let qountTotalinBasket = 0;//En premier temps si le panier est vide alors par défaut on affiche 0
   let getQtyProducts = get('products');
   
@@ -106,8 +106,7 @@ function countTotalProductsInBasket(){
   return qountTotalinBasket;//Si non tu me renvoie 0
 }
 
-displayQtyItemsInBasket()
-function displayQtyItemsInBasket(){
+function displayQtyItemsInBasket(){//Affiche les nombres de produits ajoutés dans le panier
   const qty = countTotalProductsInBasket();
 
   document.getElementById('qntProduct').innerHTML = qty;

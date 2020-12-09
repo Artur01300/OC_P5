@@ -1,19 +1,21 @@
 //Récupération l'URL de touts les produits + id de produit, choisi par l'utilisateur, qui se trouve dans url
 let url = "http://localhost:3000/api/furniture/" + getDataFromUrl('id');
-countTotalProductsInBasket();
 
 ajax(url).then((product) => {//On appelle le produit
   displayProduct(product);
   listenForCartAddition(product);
+  displayQtyItemsInBasket();
 })
 
+//Écoute les clique des users pour ajouter les produits dans le panier(panier.html)
 function listenForCartAddition(product){
   let addToCart = document.getElementById('addToCart');
 
   addToCart.addEventListener('click', () => {
+
     let products = [];
     //On créé ce tableau vide pour pouvoir ajouter les produits choisi par l'utilisateur dans le tableau 'products',
-    //pour ensuit stoquer les produits dans localStorage(ligne 34)
+    //pour ensuit stoquer les produits dans localStorage(ligne 37)
     
     //On vérifie si lutilisateur a choisi son produit, si oui, on ajoute les produits dans les "products", pour ensuite les stocker dans local Storage
     if(get('products')){
@@ -25,9 +27,9 @@ function listenForCartAddition(product){
     //Récupération d'index nous permet de modifier la quantité pour en soute enregistrer dans local storage
     //Si le produit n'est pas dans panier en pousse le produit dans local storage
     let varnish = document.getElementById('options').value;
-    if(findProductIncCart(product._id, varnish).length > 0){//Je vérifie si le produit est dans le panier, alors on récupère le produit et son index.
-      let productInCart = findProductIncCart(product._id, varnish)[0];//Récupération du produit
-      let productIndexInCart = findProductIndex(products, productInCart)//Récupère l'index du produit et on insère dans 'products[productIndexInCart]'/ligne 33)
+    if(findProductInCart(product._id, varnish).length > 0){//Je vérifie si le produit est dans le panier, alors on récupère le produit et son index.
+      let productInCart = findProductInCart(product._id, varnish)[0];//Récupération du produit
+      let productIndexInCart = findProductIndex(products, productInCart)//Récupère l'index du produit et on insère dans 'products[productIndexInCart]'/ligne 35)
       
       //On ajoute un produit(productInCart.qty + 1) par click dans le tableau products puis on met à jour local storage
       products[productIndexInCart].qty = productInCart.qty + 1;
@@ -45,12 +47,12 @@ function listenForCartAddition(product){
       })
     }
     store('products', products);
-    location.reload(); 
+    location.reload();
   });
 }
 
 //Récupération du produit après le filtrage de la même vernie est l'id de produit pour en suit faire passer dans le function 'listenForCartAddition'
-function findProductIncCart(id, varnish){
+function findProductInCart(id, varnish){
   let products = [];//Je cherche les produits qu'ils sont au départ vide
 
   if(get('products')){//Après je prends tous les produits puis je filtre dedans
@@ -62,6 +64,6 @@ function findProductIncCart(id, varnish){
   });
 }
 
-function displayProduct(product){
+function displayProduct(product){//Affiche les produits 
   document.getElementById('main').innerHTML += renderProduct(product, 'single');
 }

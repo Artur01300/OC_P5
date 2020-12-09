@@ -1,11 +1,10 @@
 // J'appelle les products (let productsInCart = get('products'))
 let productsInCart = get('products');
-countTotalProductsInBasket();
 
 if(productsInCart){
   show('form-section');
   hide('basketEmptyInfo');
-
+  
   ajax("http://localhost:3000/api/furniture")
   .then((allProducts) => {     
     let products = getProductsFromCart(allProducts);//Récupération du produit choisi par l'utilisateur 
@@ -15,30 +14,31 @@ if(productsInCart){
     listenForProductAddition(products);
     listenForProductDeletion(products);
     listenForFormSubmit(total);
+    displayQtyItemsInBasket();
   });
 }else{
   hide('form-section');
   show('basketEmptyInfo');
 }
 
-function listenForProductAddition(products){    
+//Ecoute pour additionner les produits depuis le panier.html
+function listenForProductAddition(products){
   for(let product of products){//On boucle sur le produit pour écouter avec plus- chaque product.id & product.varnish
     document.getElementById('plus-' + product.id + '-' + product.varnish).addEventListener('click', function(){//On écoute product.id et product.varnish
       let productsInStorage = get('products');//J'appelle les produits qui se trouvent dans local storage pour trouver l'index product.id & product.varnish
-
       const index = findProductIndex(productsInStorage, product);//Récupération de l'index pour product.id & product.varnish
       
       productsInStorage[index].qty = productsInStorage[index].qty + 1;//ça permet d'ajouter le produit par 1
       store('products', productsInStorage); //On met à jour local Storage
 
-      location.reload();  
+      location.reload();
     })
   }
 }
 
-//Écoute les cliques d'utilisateurs pour supprimer les produits
+//Écoute pour soustraire les produits depuis le panier.html
 function listenForProductDeletion(products){    
-  for(let product of products){ //On boucle sur le produit pour écouter avec plus- chaque produit(product.id)
+  for(let product of products){ //On boucle sur le produit pour écouter avec minus- chaque product.id & product.varnish
     document.getElementById('minus-' + product.id + '-' + product.varnish).addEventListener('click', function(){//On écoute product.id et product.varnish
       let productsInStorage = get('products');//J'appelle les produits qui se trouvent dans local Storage pour tourver l'index product.id & product.varnish
 
@@ -61,17 +61,17 @@ function listenForProductDeletion(products){
   }
 }
 
-function displayProducts(products){
+function displayProducts(products){//Affiche les produits dans la page panier.html
   for(let product of products){   
     document.getElementById('main').innerHTML += renderProduct(product,'cart');
   }
 }
 
-function displayTotal(total){
+function displayTotal(total){//Affiche le prix total des produits
   document.getElementById('show-totalprices').innerHTML = 'Total : ' + displayPrice(total) + ' €';
 }
 
-function countTotal(products){
+function countTotal(products){//Compte les prix des produits 
   let total = 0;
   
   for(let product of products){      
@@ -82,14 +82,14 @@ function countTotal(products){
 
 //Récupération du produit choisi par l'utilisateur 
 function getProductsFromCart(products){
-  let list = [];//Permet de stocker le produit choisi par l'utilisateur dans le tableau "liste" puis on le récupère après la comparaison
+  let list = [];//Permet de stocker le produit choisi par l'utilisateur dans le tableau "liste" puis on return
   for(const productInCart of productsInCart){
     list.push(productInCart);
   }
   return list;
 }
 
-//Je récupère ids du produit. Pour pouvoir envoyer les Ids des commendes choisies par les utilisateurs
+//Je récupère ids du produit. Pour pouvoir envoyer les Ids des commendes choisies par les utilisateurs au serveur (payload)
 function getProductsId(){
   let ids = [];
 
@@ -132,9 +132,9 @@ function listenForFormSubmit(total){//Écoute la soumission du formulaire de con
     fetch('http://localhost:3000/api/furniture/order', options)
     .then(order => order.json())
     .then(orderResponse => {
-  
-      const orderId = JSON.stringify(orderResponse.orderId);
-      window.location.href = "commande.html?order_id=" + orderId + '&total=' + total;
+
+    //J'affiche orderid est prix total dans URl de la page commande.html pour afficher ensuit ces informations dans la page commande.html
+      window.location.href = "commande.html?order_id=" + orderResponse.orderId + '&total=' + total;
     })
   });
 }
@@ -152,7 +152,7 @@ function checkInputs(){//Vérification la valeur des champs du formulaire
   document.getElementById('msg-city').innerHTML = '';
   document.getElementById('msg-email').innerHTML = '';
 
-  let errors = 0;//Création variable 'errores', qui nous permet encrémenter les erreus (afficher le text rouge si la valeur du formoulaire est incorrect)
+  let errors = 0;//Création variable 'errors', qui nous permet encrémenter les erreus (afficher le text rouge si la valeur du formoulaire est incorrect)
 
   if(!isEmailValid(email)){//Si les inputs du champ sont incorrects on affiche le message erreur
     document.getElementById('msg-email').innerHTML = 'Ce champ est incorrect.';
