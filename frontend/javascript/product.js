@@ -52,7 +52,7 @@ function listenForCartAddition(product){
 //Récupération du produit après le filtrage de la même vernie est l'id de produit pour en suit faire passer dans le function 'listenForCartAddition'
 function findProductInCart(id, varnish){
   let products = [];//Je cherche les produits qu'ils sont au départ vide
-
+ 
   if(get('products')){//Après je prends tous les produits puis je filtre dedans
     products = get('products');
   }

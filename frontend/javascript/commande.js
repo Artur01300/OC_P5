@@ -5,4 +5,4 @@ document.getElementById('orderId').innerHTML = orderId;//Récupération confirma
 document.getElementById('price').innerHTML = displayPrice(total);//Récupération le prix total de la commande depuis URL puis on affiche 
 hide('qntProduct');//On cache l'affichage des quatités du produit
 
-localStorage.clear();//Suppression local storage
+localStorage.removeItem('products');//Suppression local storage
